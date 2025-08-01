@@ -5,20 +5,15 @@ import { Task } from '../../../domain/entities/task.entity';
 import { ITaskRepository } from '../../../domain/repositories/task.repository';
 
 @Injectable()
-export class TaskMongoRepository implements ITaskRepository {
+export class TaskRepository implements ITaskRepository {
   constructor(
-    @InjectModel('Task') private readonly taskModel: Model<any>,
+    @InjectModel('Task') 
+    private readonly model: Model<any>,
   ) {}
 
   async create(task: Task): Promise<Task> {
-    const created = await this.taskModel.create(task);
-    return new Task(
-      created.id,
-      created.userId,
-      created.title,
-      created.description,
-      created.status,
-      created.createdAt
-    );
+    const created = await this.model.create({ ...task });
+    task.id = created.id;
+    return task;
   }
 }

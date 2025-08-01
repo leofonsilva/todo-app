@@ -1,15 +1,17 @@
-import { Controller, Post, Body, UseGuards, Req } from '@nestjs/common';
+import { Controller, Post, Body, Inject } from '@nestjs/common';
+import { ICreateTaskUseCase } from '../../application/use-cases/interfaces/create-task.usecase';
 import { CreateTaskDto } from '../../application/dtos/create-task.dto';
-import { TaskMongoRepository } from '../../infrastructure/database/repositories/task-mongo.repository';
-import { CreateTaskUseCase } from '../../application/use-cases/create-task.usecase';
+import { Task } from '../../domain/entities/task.entity';
 
 @Controller('tasks')
 export class TaskController {
-  constructor(private readonly taskRepo: TaskMongoRepository) {}
+  constructor(
+    @Inject(ICreateTaskUseCase)
+    private readonly createTaskUseCase: ICreateTaskUseCase
+  ) {}
 
   @Post()
-  async create(@Body() body: CreateTaskDto) {
-    const useCase = new CreateTaskUseCase(this.taskRepo);
-    return await useCase.execute(body);
+  async create(@Body() body: CreateTaskDto): Promise<Task> {
+    return await this.createTaskUseCase.execute(body);
   }
 }

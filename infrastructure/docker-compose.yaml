@@ -1,4 +1,6 @@
-version: '3.8'
+# Subir ambiente em desenvolvimento
+# Run: docker-compose up --build -d
+# Stop: docker-compose down
 
 services:
   mongodb:

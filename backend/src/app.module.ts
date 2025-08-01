@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TaskController } from './presentation/controllers/task.controller';
 import { TaskSchema } from './infrastructure/database/schemas/task.schema';
-import { TaskMongoRepository } from './infrastructure/database/repositories/task-mongo.repository';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { RepositoryProviders } from './infrastructure/providers/repository.provider';
+import { UseCaseProviders } from './infrastructure/providers/use-case.provider';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { AppService } from './app.service';
   ],
   providers: [
     AppService, 
-    TaskMongoRepository
+    ...RepositoryProviders,
+    ...UseCaseProviders,
   ],
 })
 export class AppModule {}
