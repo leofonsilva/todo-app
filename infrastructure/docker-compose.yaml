@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:6
+    container_name: todo-mongodb-container
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    volumes:
+      - D:/Development/Docker/todo-app/volumes/mongodb/data:/data/db
+  
+  todo-backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: todo-backend
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mongodb
+    volumes:
+      - ../backend:/app
+      - /app/node_modules
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/todo
