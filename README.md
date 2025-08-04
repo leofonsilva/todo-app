@@ -3,40 +3,6 @@
 ## Visão geral
 - Projeto para treinar conhecimentos em NextJS, NestJS e MongoDB
 
-## Estrutura
-/backend
-  /src
-    /domain
-      /entities
-        task.entity.ts
-      /repositories
-        task.repository.ts
-    /application
-      /use-cases
-        create-task.usecase.ts
-        get-tasks.usecase.ts
-        ...
-      /dto
-        create-task.dto.ts
-    /infrastructure
-      /database
-        /schemas
-          task.schema.ts
-        /repositories
-          task-mongo.repository.ts
-      /auth
-        auth.module.ts
-        jwt.strategy.ts
-        auth.service.ts
-        ...
-    /presentation
-      /controllers
-        task.controller.ts
-      /validators
-        create-task.validator.ts
-    app.module.ts
-    main.ts
-
 ## Comandos
 - Subir projeto
   - cd infrastructure
@@ -58,3 +24,4 @@
   - cd backend
   - npm install @nestjs/mongoose mongoose @nestjs/jwt passport-jwt passport bcrypt
   - npm install -D @types/passport-jwt @types/bcrypt
+  - npm install class-validator class-transformer

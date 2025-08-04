@@ -7,13 +7,28 @@ import { ITaskRepository } from '../../../domain/repositories/task.repository';
 @Injectable()
 export class TaskRepository implements ITaskRepository {
   constructor(
-    @InjectModel('Task') 
-    private readonly model: Model<any>,
-  ) {}
+    @InjectModel('Task') private readonly model: Model<any>,
+  ) { }
 
   async create(task: Task): Promise<Task> {
     const created = await this.model.create({ ...task });
     task.id = created.id;
     return task;
+  }
+
+  findAll(userId: string): Promise<Task[]> {
+    return this.model.find({ userId }).exec();
+  }
+
+  findById(id: string, userId: string): Promise<Task | null> {
+    return this.model.findOne({ _id: id, userId }).exec();
+  }
+
+  update(id: string, task: Partial<Task>, userId: string): Promise<Task> {
+    return this.model.findOneAndUpdate({ _id: id, userId }, task, { new: true }).exec();
+  }
+
+  async delete(id: string, userId: string): Promise<void> {
+    await this.model.deleteOne({ _id: id, userId }).exec();
   }
 }

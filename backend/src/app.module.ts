@@ -13,13 +13,14 @@ import { UseCaseProviders } from './infrastructure/providers/use-case.provider';
     MongooseModule.forFeature([{ name: 'Task', schema: TaskSchema }]),
   ],
   controllers: [
-    AppController, 
+    AppController,
     TaskController
   ],
   providers: [
-    AppService, 
+    AppService,
     ...RepositoryProviders,
     ...UseCaseProviders,
   ],
 })
-export class AppModule {}
+
+export class AppModule { }
