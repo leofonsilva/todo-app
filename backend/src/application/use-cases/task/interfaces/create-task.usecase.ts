@@ -1,5 +1,5 @@
-import { CreateTaskDto } from '../../../dtos/task/create-task.dto';
-import { Task } from '../../../../domain/entities/task.entity';
+import { CreateTaskDto } from 'src/application/dtos/task/create-task.dto';
+import { Task } from 'src/domain/entities/task.entity';
 
 export const ICreateTaskUseCase = Symbol('ICreateTaskUseCase');
 

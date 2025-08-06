@@ -1,4 +1,4 @@
-import { Task } from '../../../../domain/entities/task.entity';
+import { Task } from 'src/domain/entities/task.entity';
 
 export const IGetTaskByIdUseCase = Symbol('IGetTaskByIdUseCase');
 
