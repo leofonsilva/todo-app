@@ -25,3 +25,7 @@
   - npm install @nestjs/mongoose mongoose @nestjs/jwt passport-jwt passport bcrypt
   - npm install -D @types/passport-jwt @types/bcrypt
   - npm install class-validator class-transformer
+  - npm install @nestjs/passport passport
+  - npm install --save-dev @types/passport
+  - npm install passport-jwt
+  - npm install --save-dev @types/passport-jwt
