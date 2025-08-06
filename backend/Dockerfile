@@ -1,5 +1,5 @@
-# Usar imagem leve e com Node 18
-FROM node:18
+# Usar imagem leve e com Node 22
+FROM node:22-alpine
 
 # Diretório padrão do app
 WORKDIR /app
@@ -7,8 +7,9 @@ WORKDIR /app
 # Copiar apenas os arquivos de dependência primeiro (otimiza o cache do Docker)
 COPY package*.json ./
 
-# Instalar dependências
-RUN npm install
+# Limpar cache e instalar dependências
+RUN npm cache clean --force \
+  && npm install
 
 # Agora copiar o restante do código
 COPY . .
