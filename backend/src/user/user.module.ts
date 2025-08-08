@@ -10,6 +10,8 @@ import { AuthModule } from 'src/auth/auth.module';
 
 import { IRegisterUserUseCase } from './application/usecases/register-user.usecase.interface';
 import { IUserRepository } from './domain/repositories/user.repository.interface';
+import { IGetUserByEmailUseCase } from './application/usecases/get-user-by-email.usecase.interface';
+import { GetUserByEmailUseCase } from './application/usecases/get-user-by-email.usecase';
 
 @Module({
   imports: [
@@ -21,7 +23,8 @@ import { IUserRepository } from './domain/repositories/user.repository.interface
     UserRepository,
     { provide: IUserRepository, useExisting: UserRepository },
 
-    { provide: IRegisterUserUseCase, useClass: RegisterUserUseCase }
+    { provide: IRegisterUserUseCase, useClass: RegisterUserUseCase },
+    { provide: IGetUserByEmailUseCase, useClass: GetUserByEmailUseCase }
   ],
   exports: [
     UserRepository,
