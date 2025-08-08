@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Inject, Get, Put, Delete, Param, Query, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, Inject, Get, Put, Delete, Param, Query, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ICreateTaskUseCase } from 'src/task/application/usecases/create-task.usecase.interface';
 import { IDeleteTaskUseCase } from 'src/task/application/usecases/delete-task.usecase.interface';
 import { IGetAllTasksUseCase } from 'src/task/application/usecases/get-all-tasks.usecase.interface';
@@ -26,22 +26,22 @@ export class TaskController {
   }
 
   @Get()
-  async getAll(@Query('userId') userId: string) {
-    return this.getAllTasksUseCase.execute(userId);
+  async getAll() {
+    return this.getAllTasksUseCase.execute();
   }
 
   @Get(':id')
-  async getById(@Param('id') id: string, @Query('userId') userId: string) {
-    return this.getTaskByIdUseCase.execute(id, userId);
+  async getById(@Param('id') id: string) {
+    return this.getTaskByIdUseCase.execute(id);
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Query('userId') userId: string, @Body() body: UpdateTaskDto) {
-    return this.updateTaskUseCase.execute(id, userId, body);
+  async update(@Param('id') id: string, @Body() body: UpdateTaskDto) {
+    return this.updateTaskUseCase.execute(id, body);
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string, @Query('userId') userId: string) {
-    return this.deleteTaskUseCase.execute(id, userId);
+  async delete(@Param('id') id: string) {
+    return this.deleteTaskUseCase.execute(id);
   }
 }
