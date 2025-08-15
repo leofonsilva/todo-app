@@ -14,7 +14,7 @@ services:
   
   todo-backend:
     build:
-      context: ../backend
+      context: ../../backend
       dockerfile: Dockerfile
     container_name: todo-backend
     ports:
@@ -22,7 +22,7 @@ services:
     depends_on:
       - mongodb
     volumes:
-      - ../backend:/app
+      - ../../backend:/app
       - /app/node_modules
     environment:
       - MONGO_URI=mongodb://mongodb:27017/todo
