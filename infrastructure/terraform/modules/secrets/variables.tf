@@ -9,12 +9,6 @@ variable "secret_data" {
   sensitive   = true
 }
 
-variable "environment" {
-  type        = string
-  default     = "dev"
-  description = "Environment prefix"
-}
-
 variable "tags" {
   type        = map(string)
   default     = {}

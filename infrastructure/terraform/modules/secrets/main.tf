@@ -1,12 +1,9 @@
 resource "aws_secretsmanager_secret" "this" {
-  name        = "${var.environment}/${var.name}"
-  description = "Secret for ${var.name} in ${var.environment}"
-  
+  name        = var.name
+  description = "Secret for ${var.name}"  
   recovery_window_in_days = 7
 
-  tags = merge(var.tags, {
-    Environment = var.environment
-  })
+  tags = merge(var.tags, { Name = "${var.name}" })
 }
 
 resource "aws_secretsmanager_secret_version" "initial" {

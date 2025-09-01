@@ -17,7 +17,7 @@ resource "aws_security_group_rule" "allow_vpc" {
 }
 
 resource "aws_docdb_cluster" "this" {
-  cluster_identifier = "${var.environment}-${var.name}"
+  cluster_identifier = "${var.name}"
 
   engine              = "docdb"
   engine_version      = "5.0"
@@ -32,15 +32,12 @@ resource "aws_docdb_cluster" "this" {
   skip_final_snapshot     = true
   deletion_protection     = var.deletion_protection
 
-  tags = merge(var.tags, {
-    Environment = var.environment
-    Name        = "${var.environment}-${var.name}"
-  })
+  tags = merge(var.tags, { Name = "${var.name}" })
 }
 
 resource "aws_docdb_cluster_instance" "this" {
   count              = var.instance_count
-  identifier         = "${var.environment}-${var.name}-instance-${count.index}"
+  identifier         = "${var.name}-instance-${count.index}"
   cluster_identifier = aws_docdb_cluster.this.id
   instance_class     = var.instance_class
   promotion_tier     = 2
