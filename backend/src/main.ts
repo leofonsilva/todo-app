@@ -14,11 +14,17 @@ async function bootstrap() {
   }
   
   app.useGlobalFilters(new AllExceptionsFilter());
+
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
     forbidNonWhitelisted: true,
     transform: true
   }));
+
+  app.use('/favicon.ico', (req, res) => {
+    res.status(204).end();
+  });
+
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
