@@ -20,7 +20,7 @@ services:
       dockerfile: Dockerfile
     container_name: todo-backend
     ports:
-      - '3000:3000'
+      - '3001:3001'
     depends_on:
       - todo-mongodb
     volumes:
@@ -39,14 +39,14 @@ services:
       dockerfile: Dockerfile
     container_name: todo-frontend
     ports:
-      - '3001:3001'
+      - '3000:3000'
     depends_on:
       - todo-backend
     volumes:
       - ../../frontend:/app
       - /app/node_modules
     environment:
-      - NEXT_PUBLIC_API_URL=http://todo-backend:3000
+      - NEXT_PUBLIC_API_URL=http://todo-backend:3001
     networks:
       - todo-network
   

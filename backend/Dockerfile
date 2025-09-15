@@ -14,7 +14,7 @@ RUN npm ci
 COPY . .
 
 # Expor porta
-EXPOSE 3000
+EXPOSE 3001
 
 # Rodar backend com hot reload
 CMD ["npm", "run", "start:dev"]
