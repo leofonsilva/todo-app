@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Inject } from '@nestjs/common';
+import { Controller, Post, Body, Inject, HttpCode } from '@nestjs/common';
 import { LoginDto } from 'src/auth/application/dtos/login.dto';
 import { ILoginUseCase } from 'src/auth/application/usecases/login.usecase.interface';
 
@@ -9,6 +9,7 @@ export class AuthController {
   ) { }
 
   @Post('login')
+  @HttpCode(200)
   async login(@Body() body: LoginDto) {
     return this.loginUseCase.execute(body);
   }
