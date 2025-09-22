@@ -14,7 +14,7 @@ RUN npm ci
 COPY . .
 
 # Expor porta
-EXPOSE 3001
+EXPOSE 3000
 
 # Rodar frontend com hot reload
 CMD ["npm", "run", "dev"]

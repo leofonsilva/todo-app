@@ -4,6 +4,8 @@
 - Projeto para treinar conhecimentos em NextJS, NestJS e MongoDB
 
 ## Comandos
+
+### Backend
 - Subir projeto
   - cd infrastructure
   - docker-compose up
@@ -29,3 +31,9 @@
   - npm install --save-dev @types/passport
   - npm install passport-jwt
   - npm install --save-dev @types/passport-jwt
+
+### Frontend
+- Criar projeto inicial
+  - npx create-next-app@latest meu-projeto
+- Instalar dependências
+  - npm install @tanstack/react-query @tanstack/react-query-devtools axios react-hook-form
