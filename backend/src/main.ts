@@ -12,7 +12,14 @@ async function bootstrap() {
   if (!mongoUri) {
     throw new Error('MONGO_URI não está definido no .env');
   }
-  
+
+  app.enableCors({
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type, Authorization',
+    credentials: true,
+  });
+
   app.useGlobalFilters(new AllExceptionsFilter());
 
   app.useGlobalPipes(new ValidationPipe({
