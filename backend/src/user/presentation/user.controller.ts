@@ -1,8 +1,9 @@
-import { Controller, Post, Body, Inject, Get, Query } from '@nestjs/common';
+import { Controller, Post, Body, Inject, Get, UseGuards } from '@nestjs/common';
 import { RegisterUserDto } from 'src/user/application/dtos/register-user.dto';
 import { IRegisterUserUseCase } from 'src/user/application/usecases/register-user.usecase.interface';
-import { GetUserByEmailDto } from 'src/user/application/dtos/get-user-by-email.dto';
 import { IGetUserByEmailUseCase } from 'src/user/application/usecases/get-user-by-email.usecase.interface';
+import { JwtAuthGuard } from 'src/shared/guards/jwt-auth.guard';
+import { GetUserByEmailResponseDto } from '../application/dtos/get-user-by-email.reponse.dto';
 
 @Controller('users')
 export class UserController {
@@ -12,12 +13,13 @@ export class UserController {
   ) { }
 
   @Post('register')
-  async register(@Body() dto: RegisterUserDto) {
+  async register(@Body() dto: RegisterUserDto): Promise<{ access_token: string }> {
     return this.registerUseCase.execute(dto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('by-email')
-  async getByEmail(@Query() query: GetUserByEmailDto) {
-    return this.getUserByEmailUseCase.execute(query.email);
+  async getByEmail(): Promise<GetUserByEmailResponseDto> {
+    return this.getUserByEmailUseCase.execute();
   }
 }

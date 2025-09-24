@@ -11,7 +11,7 @@ export class RegisterUserUseCase implements IRegisterUserUseCase {
     private readonly authService: AuthService,
   ) { }
 
-  async execute(data: RegisterUserDto) {
+  async execute(data: RegisterUserDto): Promise<{ access_token: string }> {
     const exists = await this.userRepository.findByEmail(data.email);
 
     if (exists) {

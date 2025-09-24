@@ -1,19 +1,22 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { IGetUserByEmailUseCase } from './get-user-by-email.usecase.interface';
 import { IUserRepository } from 'src/user/domain/repositories/user.repository.interface';
 import { GetUserByEmailResponseDto } from '../dtos/get-user-by-email.reponse.dto';
+import { CurrentUserService } from 'src/shared/services/current-user.service';
 
 @Injectable()
 export class GetUserByEmailUseCase implements IGetUserByEmailUseCase {
   constructor(
     @Inject(IUserRepository) private readonly userRepository: IUserRepository,
+    private readonly currentUserService: CurrentUserService
   ) { }
 
-  async execute(email: string): Promise<GetUserByEmailResponseDto | null> {
-    const user = await this.userRepository.findByEmail(email);
+  async execute(): Promise<GetUserByEmailResponseDto> {
+    const userEmail = this.currentUserService.getEmail();
+    const user = await this.userRepository.findByEmail(userEmail);
 
     if (!user) {
-      return null;
+      throw new NotFoundException(`User not found`);
     }
 
     return Object.assign(new GetUserByEmailResponseDto(), {

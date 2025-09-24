@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Inject, Get, Put, Delete, Param, Query, UseGuards, UseInterceptors, HttpCode } from '@nestjs/common';
+import { Controller, Post, Body, Inject, Get, Put, Delete, Param, UseGuards, HttpCode } from '@nestjs/common';
 import { ICreateTaskUseCase } from 'src/task/application/usecases/create-task.usecase.interface';
 import { IDeleteTaskUseCase } from 'src/task/application/usecases/delete-task.usecase.interface';
 import { IGetAllTasksUseCase } from 'src/task/application/usecases/get-all-tasks.usecase.interface';
