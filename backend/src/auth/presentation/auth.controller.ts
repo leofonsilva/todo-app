@@ -10,7 +10,7 @@ export class AuthController {
 
   @Post('login')
   @HttpCode(200)
-  async login(@Body() body: LoginDto) {
+  async login(@Body() body: LoginDto): Promise<{ access_token: string; }> {
     return this.loginUseCase.execute(body);
   }
 }

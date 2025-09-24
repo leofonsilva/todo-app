@@ -9,9 +9,9 @@ export class LoginUseCase implements ILoginUseCase {
   constructor(
     @Inject(IUserRepository) private readonly userRepo: IUserRepository,
     private readonly authService: AuthService,
-  ) {}
+  ) { }
 
-  async execute(data: LoginDto) {
+  async execute(data: LoginDto): Promise<{ access_token: string }> {
     const user = await this.userRepo.findByEmail(data.email);
 
     if (!user || !(await this.authService.comparePassword(data.password, user.password))) {

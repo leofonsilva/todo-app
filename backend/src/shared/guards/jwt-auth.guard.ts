@@ -4,7 +4,6 @@ import { CurrentUserService } from 'src/shared/services/current-user.service';
 import { Request } from 'express';
 import { AuthenticatedUser } from 'src/shared/types/authenticated-user';
 
-
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
   constructor(private readonly currentUserService: CurrentUserService) {
@@ -27,7 +26,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     if (result) {
       this.setCurrentUser(context);
     }
-    
+
     return result;
   }
 
@@ -39,4 +38,4 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       this.currentUserService.setUser(user);
     }
   }
- }
+}
