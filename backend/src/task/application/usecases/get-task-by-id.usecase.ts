@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import { ITaskRepository } from 'src/task/domain/repositories/task.repository.interface';
 import { IGetTaskByIdUseCase } from './get-task-by-id.usecase.interface';
 import { Task } from 'src/task/domain/entities/task.entity';
@@ -11,8 +11,14 @@ export class GetTaskByIdUseCase implements IGetTaskByIdUseCase {
     private readonly currentUserService: CurrentUserService
   ) { }
 
-  execute(id: string): Promise<Task | null> {
+  async execute(id: string): Promise<Task> {
     const userId = this.currentUserService.getUserId();
-    return this.taskRepository.findById(id, userId);
+    const task = await this.taskRepository.findById(id, userId);
+
+    if (!task) {
+      throw new NotFoundException(`Task with id ${id} not found`);
+    }
+
+    return task;
   }
 }

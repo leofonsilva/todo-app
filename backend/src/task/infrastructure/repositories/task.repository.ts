@@ -24,11 +24,12 @@ export class TaskRepository implements ITaskRepository {
     return this.model.findOne({ _id: id, userId }).exec();
   }
 
-  update(id: string, task: Partial<Task>, userId: string): Promise<Task> {
+  update(id: string, task: Partial<Task>, userId: string): Promise<Task | null> {
     return this.model.findOneAndUpdate({ _id: id, userId }, task, { new: true }).exec();
   }
 
-  async delete(id: string, userId: string): Promise<void> {
-    await this.model.deleteOne({ _id: id, userId }).exec();
+  async delete(id: string, userId: string): Promise<boolean> {
+    const response = await this.model.deleteOne({ _id: id, userId }).exec();
+    return response.deletedCount > 0;
   }
 }

@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Inject, Get, Put, Delete, Param, Query, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Controller, Post, Body, Inject, Get, Put, Delete, Param, Query, UseGuards, UseInterceptors, HttpCode } from '@nestjs/common';
 import { ICreateTaskUseCase } from 'src/task/application/usecases/create-task.usecase.interface';
 import { IDeleteTaskUseCase } from 'src/task/application/usecases/delete-task.usecase.interface';
 import { IGetAllTasksUseCase } from 'src/task/application/usecases/get-all-tasks.usecase.interface';
@@ -26,22 +26,23 @@ export class TaskController {
   }
 
   @Get()
-  async getAll() {
-    return this.getAllTasksUseCase.execute();
+  async getAll(): Promise<Task[]> {
+    return await this.getAllTasksUseCase.execute();
   }
 
   @Get(':id')
-  async getById(@Param('id') id: string) {
-    return this.getTaskByIdUseCase.execute(id);
+  async getById(@Param('id') id: string): Promise<Task> {
+    return await this.getTaskByIdUseCase.execute(id);
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() body: UpdateTaskDto) {
-    return this.updateTaskUseCase.execute(id, body);
+  async update(@Param('id') id: string, @Body() body: UpdateTaskDto): Promise<Task> {
+    return await this.updateTaskUseCase.execute(id, body);
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string) {
-    return this.deleteTaskUseCase.execute(id);
+  @HttpCode(204)
+  async delete(@Param('id') id: string): Promise<void> {
+    return await this.deleteTaskUseCase.execute(id);
   }
 }

@@ -11,8 +11,8 @@ export class GetAllTasksUseCase implements IGetAllTasksUseCase {
     private readonly currentUserService: CurrentUserService
   ) { }
 
-  execute(): Promise<Task[]> {
+  async execute(): Promise<Task[]> {
     const userId = this.currentUserService.getUserId();
-    return this.taskRepository.findAll(userId);
+    return await this.taskRepository.findAll(userId);
   }
 }

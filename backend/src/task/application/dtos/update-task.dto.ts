@@ -10,7 +10,7 @@ export class UpdateTaskDto {
   description?: string;
 
   @IsString()
-  @IsIn(['pending', 'done'])
+  @IsIn(['pending', 'in-progress', 'done'])
   @IsOptional()
-  status?: 'pending' | 'done';
+  status?: 'pending' | 'in-progress' | 'done';
 }

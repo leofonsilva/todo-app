@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import { IUpdateTaskUseCase } from './update-task.usecase.interface';
 import { ITaskRepository } from 'src/task/domain/repositories/task.repository.interface';
 import { Task } from 'src/task/domain/entities/task.entity';
@@ -14,6 +14,21 @@ export class UpdateTaskUseCase implements IUpdateTaskUseCase {
 
   async execute(id: string, data: UpdateTaskDto): Promise<Task> {
     const userId = this.currentUserService.getUserId();
-    return this.taskRepository.update(id, data, userId);
+
+    const partialTask: Partial<Task> = {
+      title: data.title,
+      description: data.description ?? '',
+      status: data.status ?? 'pending',
+      userId,
+      updatedAt: new Date()
+    };
+
+    const task = await this.taskRepository.update(id, partialTask, userId);
+
+    if (!task) {
+      throw new NotFoundException(`Task with id ${id} not found`);
+    }
+
+    return task;
   }
 }
