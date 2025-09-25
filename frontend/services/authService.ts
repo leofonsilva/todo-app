@@ -1,15 +1,7 @@
 import { api } from './api';
+import { AuthLoginRequest, AuthLoginResponse } from '@/types/auth';
 
-export interface LoginData {
-  email: string;
-  password: string;
-}
-
-export interface AuthResponse {
-  access_token: string;
-}
-
-export const login = async (data: LoginData): Promise<AuthResponse> => {
-  const response = await api.post<AuthResponse>('/auth/login', data);
+export const login = async (data: AuthLoginRequest): Promise<AuthLoginResponse> => {
+  const response = await api.post<AuthLoginResponse>('/auth/login', data);
   return response.data;
 };
