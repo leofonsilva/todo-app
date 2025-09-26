@@ -38,8 +38,10 @@ module "eks" {
   cluster_version = "1.27"
   endpoint_public_access  = true
   endpoint_private_access = false
-  enabled_cluster_log_types = ["api", "audit"]  
+  enabled_cluster_log_types = ["api", "audit"]
+
   tags = var.common_tags
+  depends_on = [module.iam, module.sg]
 }
 
 module "nodegroups" {
@@ -61,6 +63,7 @@ module "nodegroups" {
   }
   
   tags = var.common_tags
+  depends_on = [module.eks]
 }
 
 module "documentdb" {
