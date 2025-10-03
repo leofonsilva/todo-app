@@ -1,12 +1,12 @@
 variable "aws_region" {
+  description = "Região da AWS"
   type        = string
   default     = "us-east-1"
-  description = "AWS region"
 }
 
 variable "common_tags" {
+  description = "Tags comuns para todos os recursos"
   type        = map(string)
-  description = "Common tags for all resources"
   default = {
     project     = "todo-app-dev"
     environment = "development"

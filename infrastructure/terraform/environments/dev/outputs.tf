@@ -1,15 +1,16 @@
-output "vpc_id" { 
-  value = module.network.vpc_id 
-  description = "VPC ID"
+output "vpc_id" {
+  description = "ID da VPC criada"
+  value       = module.network.vpc_id
 }
 
-output "eks_cluster_name" { 
-  value = module.eks.cluster_name 
+# TODO: Necessário verificar daqui para baixo
+output "eks_cluster_name" {
+  value       = module.eks.cluster_name
   description = "EKS Cluster Name"
 }
 
 output "eks_cluster_endpoint" {
-  value = module.eks.cluster_endpoint
+  value       = module.eks.cluster_endpoint
   description = "EKS API Server Endpoint"
 }
 

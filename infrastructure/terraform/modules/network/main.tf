@@ -1,6 +1,6 @@
 resource "aws_vpc" "this" {
   cidr_block = var.vpc_cidr
-  tags = merge(var.tags, { Name = "${var.name}-vpc" })
+  tags       = merge(var.tags, { Name = "${var.name}-vpc" })
 }
 
 resource "aws_subnet" "private" {
@@ -9,9 +9,9 @@ resource "aws_subnet" "private" {
   cidr_block              = var.private_subnets_cidrs[count.index]
   availability_zone       = element(var.azs, count.index)
   map_public_ip_on_launch = false
-  tags = merge(var.tags, { 
-    Name = "${var.name}-private-${count.index}"
-    "kubernetes.io/role/internal-elb" = "1" 
+  tags = merge(var.tags, {
+    Name                              = "${var.name}-private-${count.index}"
+    "kubernetes.io/role/internal-elb" = "1"
   })
 }
 
@@ -22,7 +22,7 @@ resource "aws_subnet" "public" {
   availability_zone       = element(var.azs, count.index)
   map_public_ip_on_launch = true
   tags = merge(var.tags, {
-    Name = "${var.name}-public-${count.index}"
+    Name                     = "${var.name}-public-${count.index}"
     "kubernetes.io/role/elb" = "1"
   })
 }

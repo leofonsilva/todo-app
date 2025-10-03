@@ -1,0 +1,49 @@
+# Ambiente Dev - Infraestrutura
+
+## Visão Geral
+Infraestrutura completa para aplicação Todo em ambiente de desenvolvimento otimizada para custo.
+
+## Módulos criados para esse ambiente
+
+### Módulo Network
+- **1 VPC**: lfs-todo-dev-vpc (10.0.0.0/16)
+- **1 Subnet Privada**: 10.0.1.0/24 (us-east-1a) - Para EKS e banco de dados
+- **1 Subnet Pública**: 10.0.101.0/24 (us-east-1a) - Para Load Balancers
+
+## Pré-requisitos
+- [Terraform](https://www.terraform.io/downloads.html) instalado
+- Credenciais AWS configuradas com permissões adequadas
+- WSL2 recomendado para execução dos comandos
+
+## Passos para execução
+
+1. **Acesse o diretório**
+  ~~~sh
+  cd infrastructure/terraform/environments/dev
+  ~~~
+
+2. **Inicialize o Terraform**
+  ~~~sh
+  terraform init
+  ~~~
+
+3. **Formata e valida arquivos**
+  ~~~sh
+  terraform fmt
+  terraform validate
+  ~~~
+
+4. **Visualize o plano de execução**
+  ~~~sh
+  terraform plan -out plan.out
+  ~~~
+
+5. **Aplique as mudanças**
+  ~~~sh
+  terraform apply plan.out
+  ~~~
+
+6. **(Opcional) Destrua a infraestrutura:**
+  ~~~sh
+  terraform destroy
+  ~~~
