@@ -9,18 +9,18 @@ terraform {
   }
 
   # Backend local inicial
-  backend "local" {
-    path = "terraform.tfstate"
-  }
+  # backend "local" {
+  #   path = "terraform.tfstate"
+  # }
 
   # Após a criação dos recursos, migrar o state desse projeto para o backend S3
-  # backend "s3" {
-  #   bucket         = "lfs-todo-dev-terraform-state"
-  #   key            = "todo-bootstrap/terraform.tfstate"
-  #   region         = "us-east-1"
-  #   dynamodb_table = "lfs-todo-dev-terraform-locks"
-  #   encrypt        = true
-  # }
+  backend "s3" {
+    bucket         = "lfs-todo-dev-terraform-state"
+    key            = "todo-bootstrap/terraform.tfstate"
+    region         = "us-east-1"
+    dynamodb_table = "lfs-todo-dev-terraform-locks"
+    encrypt        = true
+  }
 }
 
 provider "aws" {

@@ -3,11 +3,10 @@ locals {
   table_names  = { for e in var.environments : e => "lfs-todo-${e}-terraform-locks" }
 }
 
-# Buckets S3 para estado remoto
 resource "aws_s3_bucket" "tf_state" {
   for_each      = toset(var.environments)
   bucket        = local.bucket_names[each.key]
-  force_destroy = true # Permitido apenas porque esse projeto é para fins de desenvolvimento
+  force_destroy = true # Definido 'true' apenas por ser um projeto de teste
 
   tags = {
     Name        = local.bucket_names[each.key]
@@ -48,7 +47,6 @@ resource "aws_s3_bucket_public_access_block" "tf_state" {
   restrict_public_buckets = true
 }
 
-# Tabelas DynamoDB para locking do Terraform
 resource "aws_dynamodb_table" "tf_locks" {
   for_each     = toset(var.environments)
   name         = local.table_names[each.key]
