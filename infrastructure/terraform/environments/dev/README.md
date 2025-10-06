@@ -10,6 +10,10 @@ Infraestrutura completa para aplicação Todo em ambiente de desenvolvimento oti
 - **1 Subnet Privada**: 10.0.1.0/24 (us-east-1a) - Para EKS e banco de dados
 - **1 Subnet Pública**: 10.0.101.0/24 (us-east-1a) - Para Load Balancers
 
+### Módulo IAM
+- **1 IAM Role**: lfs-todo-dev-eks-cluster-role - Permissões para o cluster EKS
+- **1 IAM Role**: lfs-todo-dev-eks-node-role - Permissões para os nodes do EKS
+
 ## Pré-requisitos
 - [Terraform](https://www.terraform.io/downloads.html) instalado
 - Credenciais AWS configuradas com permissões adequadas

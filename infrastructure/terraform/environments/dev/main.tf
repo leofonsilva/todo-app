@@ -12,16 +12,16 @@ module "network" {
   tags                  = var.common_tags
 }
 
-# TODO: Necessário verificar daqui para baixo
 module "iam" {
   source                     = "../../modules/iam"
   name                       = local.name
-  cluster_assume_role_policy = file("${path.module}/../../templates/eks-cluster-assume-role.json")
-  node_assume_role_policy    = file("${path.module}/../../templates/eks-node-assume-role.json")
-  create_node_role           = true
+  cluster_assume_role_policy = file("${path.module}/../../templates/eks-cluster-assume-role.json") # Permite EKS assumir role
+  node_assume_role_policy    = file("${path.module}/../../templates/eks-node-assume-role.json")    # Permite EC2 assumir role
+  create_node_role           = true                                                                # Cria role para nodes
   tags                       = var.common_tags
 }
 
+# TODO: Necessário verificar daqui para baixo
 module "sg" {
   source   = "../../modules/security-groups"
   name     = local.name
