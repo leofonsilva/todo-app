@@ -1,50 +1,50 @@
 variable "cluster_name" {
+  description = "Nome do cluster EKS"
   type        = string
-  description = "Name of the EKS cluster"
 }
 
 variable "cluster_role_arn" {
+  description = "ARN da role IAM para o cluster EKS"
   type        = string
-  description = "ARN of the IAM role for the EKS cluster"
 }
 
 variable "subnet_ids" {
+  description = "Lista de IDs das subnets onde o cluster EKS será implantado"
   type        = list(string)
-  description = "List of subnet IDs where the EKS cluster will be deployed"
 }
 
 variable "security_group_ids" {
+  description = "Lista de IDs dos security groups para o cluster EKS"
   type        = list(string)
-  description = "List of security group IDs for the EKS cluster"
   default     = []
 }
 
 variable "cluster_version" {
+  description = "Versão do Kubernetes para o cluster EKS"
   type        = string
-  description = "Kubernetes version for the EKS cluster"
-  default     = "1.27"
+  default     = "1.29"
 }
 
 variable "endpoint_private_access" {
+  description = "Se o endpoint da API Kubernetes é acessível privadamente"
   type        = bool
-  description = "Whether the Kubernetes API endpoint is privately accessible"
   default     = false
 }
 
 variable "endpoint_public_access" {
+  description = "Se o endpoint da API Kubernetes é acessível publicamente"
   type        = bool
-  description = "Whether the Kubernetes API endpoint is publicly accessible"
   default     = true
 }
 
 variable "enabled_cluster_log_types" {
+  description = "Lista de tipos de log para habilitar no cluster EKS"
   type        = list(string)
-  description = "List of log types to enable for the EKS cluster"
   default     = ["api", "audit", "authenticator"]
 }
 
 variable "tags" {
+  description = "Tags para aplicar ao cluster EKS"
   type        = map(string)
-  description = "Tags to apply to the EKS cluster"
   default     = {}
 }

@@ -3,17 +3,18 @@ output "vpc_id" {
   value       = module.network.vpc_id
 }
 
-# TODO: Necessário verificar daqui para baixo
 output "eks_cluster_name" {
+  description = "Nome do cluster EKS para referência e comandos AWS CLI"
   value       = module.eks.cluster_name
-  description = "EKS Cluster Name"
 }
 
 output "eks_cluster_endpoint" {
+  description = "Endpoint da API do Kubernetes para configurar kubectl"
   value       = module.eks.cluster_endpoint
-  description = "EKS API Server Endpoint"
+  sensitive   = true
 }
 
+# TODO: Necessário verificar daqui para baixo
 output "documentdb_endpoint" {
   value       = module.documentdb.cluster_endpoint
   description = "DocumentDB endpoint"

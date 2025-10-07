@@ -1,29 +1,29 @@
 output "cluster_id" {
+  description = "ID do cluster EKS criado"
   value       = aws_eks_cluster.this.id
-  description = "ID of the EKS cluster"
 }
 
 output "cluster_name" {
+  description = "Nome do cluster EKS"
   value       = aws_eks_cluster.this.name
-  description = "Name of the EKS cluster"
 }
 
 output "cluster_endpoint" {
+  description = "Endpoint do servidor da API do cluster EKS"
   value       = aws_eks_cluster.this.endpoint
-  description = "Endpoint for the EKS cluster API server"
 }
 
 output "cluster_certificate_authority_data" {
+  description = "Dados da autoridade certificadora em base64 para autenticação no cluster"
   value       = aws_eks_cluster.this.certificate_authority[0].data
-  description = "Base64 encoded certificate authority data for the cluster"
 }
 
 output "cluster_status" {
+  description = "Status atual do cluster EKS"
   value       = aws_eks_cluster.this.status
-  description = "Status of the EKS cluster"
 }
 
 output "cluster_arn" {
+  description = "ARN completo do cluster EKS"
   value       = aws_eks_cluster.this.arn
-  description = "ARN of the EKS cluster"
 }

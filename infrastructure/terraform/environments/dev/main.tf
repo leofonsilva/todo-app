@@ -5,10 +5,10 @@ locals {
 module "network" {
   source                = "../../modules/network"
   name                  = local.name
-  vpc_cidr              = "10.0.0.0/16"     # 65k IPs disponíveis
-  private_subnets_cidrs = ["10.0.1.0/24"]   # EKS e banco
-  public_subnets_cidrs  = ["10.0.101.0/24"] # Load Balancers
-  azs                   = ["us-east-1a"]    # Zona de disponibilidade definida
+  vpc_cidr              = "10.0.0.0/16"                  # 65k IPs disponíveis
+  private_subnets_cidrs = ["10.0.1.0/24", "10.0.2.0/24"] # 2 privadas (EKS obrigatório)
+  public_subnets_cidrs  = ["10.0.101.0/24"]              # 1 pública (Load Balancer)
+  azs                   = ["us-east-1a", "us-east-1b"]   # 2 AZs (EKS obrigatório)
   tags                  = var.common_tags
 }
 
@@ -24,27 +24,26 @@ module "iam" {
 module "sg" {
   source   = "../../modules/security-groups"
   name     = local.name
-  vpc_id   = module.network.vpc_id     # ID da VPC criada
-  vpc_cidr = module.network.vpc_cidr   # CIDR para regras internas
+  vpc_id   = module.network.vpc_id   # ID da VPC criada
+  vpc_cidr = module.network.vpc_cidr # CIDR para regras internas
   tags     = var.common_tags
 }
 
-# TODO: Necessário verificar daqui para baixo
 module "eks" {
   source                    = "../../modules/eks-cluster"
-  cluster_name              = "${local.name}-eks"
-  cluster_role_arn          = module.iam.cluster_role_arn
-  subnet_ids                = module.network.private_subnets
-  security_group_ids        = [module.sg.security_group_id]
-  cluster_version           = "1.27"
-  endpoint_public_access    = true
-  endpoint_private_access   = false
-  enabled_cluster_log_types = ["api", "audit"]
-
-  tags       = var.common_tags
-  depends_on = [module.iam, module.sg]
+  cluster_name              = "${local.name}-eks"            # Nome do cluster
+  cluster_role_arn          = module.iam.cluster_role_arn    # Role IAM do cluster
+  subnet_ids                = module.network.private_subnets # Subnets privadas
+  security_group_ids        = [module.sg.security_group_id]  # Security group
+  cluster_version           = "1.29"                         # Versão Kubernetes
+  endpoint_public_access    = true                           # API acessível publicamente
+  endpoint_private_access   = false                          # API não acessível privadamente
+  enabled_cluster_log_types = ["api", "audit"]               # Logs habilitados
+  tags                      = var.common_tags
+  depends_on                = [module.iam, module.sg] # Aguarda IAM e SG
 }
 
+# TODO: Necessário verificar daqui para baixo
 module "nodegroups" {
   source       = "../../modules/nodegroups"
   cluster_name = module.eks.cluster_name

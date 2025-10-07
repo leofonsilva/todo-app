@@ -7,12 +7,18 @@ Infraestrutura completa para aplicação Todo em ambiente de desenvolvimento oti
 
 ### Módulo Network
 - **1 VPC**: lfs-todo-dev-vpc (10.0.0.0/16)
-- **1 Subnet Privada**: 10.0.1.0/24 (us-east-1a) - Para EKS e banco de dados
-- **1 Subnet Pública**: 10.0.101.0/24 (us-east-1a) - Para Load Balancers
+- **2 Subnets Privadas**: 
+  - 10.0.1.0/24 (us-east-1a) - Para EKS e banco de dados
+  - 10.0.2.0/24 (us-east-1b) - Para EKS (requer 2 AZs)
+- **1 Subnet Pública**: 
+  - 10.0.101.0/24 (us-east-1a) - Para Load Balancers
 
 ### Módulo IAM
 - **1 IAM Role**: lfs-todo-dev-eks-cluster-role - Permissões para o cluster EKS
 - **1 IAM Role**: lfs-todo-dev-eks-node-role - Permissões para os nodes do EKS
+
+### Módulo EKS Cluster
+- **1 EKS Cluster**: lfs-todo-dev-eks - Cluster Kubernetes gerenciado
 
 ## Pré-requisitos
 - [Terraform](https://www.terraform.io/downloads.html) instalado
