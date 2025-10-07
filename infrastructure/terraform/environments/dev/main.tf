@@ -21,15 +21,15 @@ module "iam" {
   tags                       = var.common_tags
 }
 
-# TODO: Necessário verificar daqui para baixo
 module "sg" {
   source   = "../../modules/security-groups"
   name     = local.name
-  vpc_id   = module.network.vpc_id
-  vpc_cidr = module.network.vpc_cidr
+  vpc_id   = module.network.vpc_id     # ID da VPC criada
+  vpc_cidr = module.network.vpc_cidr   # CIDR para regras internas
   tags     = var.common_tags
 }
 
+# TODO: Necessário verificar daqui para baixo
 module "eks" {
   source                    = "../../modules/eks-cluster"
   cluster_name              = "${local.name}-eks"

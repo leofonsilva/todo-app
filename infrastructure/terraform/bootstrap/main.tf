@@ -1,8 +1,10 @@
+# Define nomes dos buckets S3 e tabelas DynamoDB para cada ambiente
 locals {
   bucket_names = { for e in var.environments : e => "lfs-todo-${e}-terraform-state" }
   table_names  = { for e in var.environments : e => "lfs-todo-${e}-terraform-locks" }
 }
 
+# Cria bucket S3 para armazenar o estado remoto do Terraform
 resource "aws_s3_bucket" "tf_state" {
   for_each      = toset(var.environments)
   bucket        = local.bucket_names[each.key]
@@ -17,6 +19,7 @@ resource "aws_s3_bucket" "tf_state" {
   }
 }
 
+# Habilita versionamento no bucket S3 para backup do estado do Terraform
 resource "aws_s3_bucket_versioning" "tf_state" {
   for_each = toset(var.environments)
   bucket   = aws_s3_bucket.tf_state[each.key].id
@@ -26,6 +29,7 @@ resource "aws_s3_bucket_versioning" "tf_state" {
   }
 }
 
+# Configura criptografia no bucket S3 para proteger o estado do Terraform
 resource "aws_s3_bucket_server_side_encryption_configuration" "tf_state" {
   for_each = toset(var.environments)
   bucket   = aws_s3_bucket.tf_state[each.key].id
@@ -37,6 +41,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "tf_state" {
   }
 }
 
+# Bloqueia acesso público ao bucket S3 por segurança
 resource "aws_s3_bucket_public_access_block" "tf_state" {
   for_each = toset(var.environments)
   bucket   = aws_s3_bucket.tf_state[each.key].id
@@ -47,6 +52,7 @@ resource "aws_s3_bucket_public_access_block" "tf_state" {
   restrict_public_buckets = true
 }
 
+# Cria tabela DynamoDB para travar o estado do Terraform e evitar conflitos
 resource "aws_dynamodb_table" "tf_locks" {
   for_each     = toset(var.environments)
   name         = local.table_names[each.key]

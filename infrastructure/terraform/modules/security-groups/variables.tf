@@ -1,20 +1,20 @@
 variable "name" {
+  description = "Nome base para o security group"
   type        = string
-  description = "Base name for security group"
 }
 
 variable "vpc_id" {
+  description = "ID da VPC onde o security group será criado"
   type        = string
-  description = "VPC ID where security group will be created"
 }
 
 variable "vpc_cidr" {
+  description = "Bloco CIDR da VPC para regras de tráfego interno"
   type        = string
-  description = "VPC CIDR block for internal communication"
 }
 
 variable "tags" {
+  description = "Tags comuns para todos os recursos"
   type        = map(string)
   default     = {}
-  description = "Tags to apply to resources"
 }
