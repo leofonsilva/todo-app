@@ -4,6 +4,11 @@ resource "aws_eks_cluster" "this" {
   role_arn = var.cluster_role_arn
   version  = var.cluster_version
 
+  access_config {
+    authentication_mode                         = "API_AND_CONFIG_MAP"
+    bootstrap_cluster_creator_admin_permissions = false
+  }
+
   vpc_config {
     subnet_ids              = var.subnet_ids              # Subnets para nós do cluster
     security_group_ids      = var.security_group_ids      # Security groups para tráfego
@@ -14,4 +19,11 @@ resource "aws_eks_cluster" "this" {
   enabled_cluster_log_types = var.enabled_cluster_log_types # Tipos de log para CloudWatch
   tags                      = merge(var.tags, { Name = var.cluster_name })
   depends_on                = [var.cluster_role_arn] # Aguarda a role IAM estar pronta
+}
+
+# Configura acesso RBAC para administradores
+resource "aws_eks_access_entry" "cluster_admins" {
+  cluster_name  = aws_eks_cluster.this.name
+  principal_arn = var.admin_role_arn
+  type          = "STANDARD"
 }

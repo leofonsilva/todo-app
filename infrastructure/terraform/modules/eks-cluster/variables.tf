@@ -8,6 +8,12 @@ variable "cluster_role_arn" {
   type        = string
 }
 
+variable "admin_role_arn" {
+  description = "ARN da role IAM para administradores do cluster EKS"
+  type        = string
+  default     = null
+}
+
 variable "subnet_ids" {
   description = "Lista de IDs das subnets onde o cluster EKS será implantado"
   type        = list(string)
@@ -22,7 +28,7 @@ variable "security_group_ids" {
 variable "cluster_version" {
   description = "Versão do Kubernetes para o cluster EKS"
   type        = string
-  default     = "1.29"
+  default     = "1.34"
 }
 
 variable "endpoint_private_access" {

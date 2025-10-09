@@ -19,7 +19,7 @@ module "eks_cluster" {
   cluster_role_arn = "arn:aws:iam::123456789012:role/eks-cluster-role"
   subnet_ids       = ["subnet-123", "subnet-456"]
   security_group_ids = ["sg-123456"]
-  cluster_version = "1.29"  # Versões suportadas: 1.30, 1.29, 1.28
+  cluster_version = "1.34"  # Versões suportadas: 1.34, 1.33, 1.32, 1,31
   endpoint_public_access  = true
   endpoint_private_access = false
   enabled_cluster_log_types = ["api", "audit"]
