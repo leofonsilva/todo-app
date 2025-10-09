@@ -17,3 +17,8 @@ output "public_subnets" {
   description = "IDs das subnets públicas"
   value       = aws_subnet.public[*].id
 }
+
+output "nat_gateway_id" {
+  description = "ID do NAT Gateway criado"
+  value       = aws_nat_gateway.this[*].id
+}
