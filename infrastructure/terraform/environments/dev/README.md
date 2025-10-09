@@ -10,15 +10,21 @@ Infraestrutura completa para aplicação Todo em ambiente de desenvolvimento oti
 - **2 Subnets Privadas**: 
   - 10.0.1.0/24 (us-east-1a) - Para EKS e banco de dados
   - 10.0.2.0/24 (us-east-1b) - Para EKS (requer 2 AZs)
-- **1 Subnet Pública**: 
-  - 10.0.101.0/24 (us-east-1a) - Para Load Balancers
+- **1 Subnet Pública**: 10.0.101.0/24 (us-east-1a) - Para NAT Gateway e Load Balancers
+- **1 NAT Gateway**: Para permitir internet nas subnets privadas
+- **1 Internet Gateway**: Para conectar a VPC à internet
 
 ### Módulo IAM
 - **1 IAM Role**: lfs-todo-dev-eks-cluster-role - Permissões para o cluster EKS
 - **1 IAM Role**: lfs-todo-dev-eks-node-role - Permissões para os nodes do EKS
+- **1 IAM Role**: lfs-todo-dev-eks-admin-role - Permissões para administrar o cluster Kubernetes
+- **1 IAM Policy**: lfs-todo-dev-assume-eks-admin - Permite assumir a role de admin do EKS
 
 ### Módulo EKS Cluster
 - **1 EKS Cluster**: lfs-todo-dev-eks - Cluster Kubernetes gerenciado
+
+### Módulo NodeGroups
+- **1 Node Group**: default - Grupo de nodes EKS com instâncias t3.small
 
 ## Pré-requisitos
 - [Terraform](https://www.terraform.io/downloads.html) instalado
@@ -57,3 +63,52 @@ Infraestrutura completa para aplicação Todo em ambiente de desenvolvimento oti
   ~~~sh
   terraform destroy
   ~~~
+
+## Passos para resolver falhas na criação de recursos
+
+1. **Interrompa o apply travado**
+  - No terminal onde o Terraform está rodando
+  ~~~sh
+  Ctrl + C
+  ~~~
+
+2. **Remova o lock no state remoto (se necessário)**
+  ~~~sh
+  terraform force-unlock <LOCK_ID>
+  ~~~
+  - `<LOCK_ID>` é informado na mensagem de erro do Terraform quando o state está travado.
+
+3. **Atualize o state local com o estado real da AWS**
+  ~~~sh
+  terraform refresh
+  ~~~
+
+4. **Gere um novo plano**
+  - Sempre gere um novo plano após travamento, não reaplique planos antigos.
+  ~~~sh
+  terraform plan -out plan.out
+  ~~~
+
+5. **Aplique o novo plano**
+  ~~~sh
+  terraform apply plan.out
+  ~~~
+
+6. **Se houver erro de recurso já existente**
+  - Verifique se o recurso está ativo na AWS (por exemplo, para EKS Node Group), se estiver ativo, remova o recurso do state antigo:
+  ~~~sh
+  terraform state rm 'module.<modulo>.<tipo_recurso>.<nome_recurso>'
+  ~~~
+
+7. **Importe o recurso existente para o Terraform**
+  ~~~sh
+  terraform import 'module.<modulo>.<tipo_recurso>.<nome_recurso>' <identificador_na_aws>
+  ~~~
+
+8. **Valide novamente**
+  ~~~sh
+  terraform plan -out plan.out
+  ~~~
+  - O Terraform deve mostrar `No changes. Infrastructure is up-to-date`.  
+  - O recurso não estará mais marcado como tainted.
+  - Pode ser que ainda precise ajustar algo como tag e outras coisas que não foram criadas, mas aí nesse caso será apenas uma atualização.

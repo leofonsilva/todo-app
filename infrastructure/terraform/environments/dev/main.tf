@@ -17,7 +17,7 @@ module "iam" {
   name                       = local.name
   cluster_assume_role_policy = file("${path.module}/../../templates/eks-cluster-assume-role.json") # Permite EKS assumir role
   node_assume_role_policy    = file("${path.module}/../../templates/eks-node-assume-role.json")    # Permite EC2 assumir role
-  create_node_role           = true                                                                # Cria role para nodes
+  admin_assume_role_policy   = file("${path.module}/../../templates/eks-admin-assume-role.json")   # Permite grupo assumir administrar cluster
   tags                       = var.common_tags
 }
 
@@ -35,30 +35,31 @@ module "eks" {
   cluster_role_arn          = module.iam.cluster_role_arn    # Role IAM do cluster
   subnet_ids                = module.network.private_subnets # Subnets privadas
   security_group_ids        = [module.sg.security_group_id]  # Security group
-  cluster_version           = "1.29"                         # Versão Kubernetes
+  cluster_version           = "1.34"                         # Versão Kubernetes
   endpoint_public_access    = true                           # API acessível publicamente
   endpoint_private_access   = false                          # API não acessível privadamente
   enabled_cluster_log_types = ["api", "audit"]               # Logs habilitados
+  admin_role_arn            = module.iam.admin_role_arn      # Conectar admin role
   tags                      = var.common_tags
-  depends_on                = [module.iam, module.sg] # Aguarda IAM e SG
+  depends_on                = [module.iam, module.sg]
 }
 
-# TODO: Necessário verificar daqui para baixo
 module "nodegroups" {
   source       = "../../modules/nodegroups"
-  cluster_name = module.eks.cluster_name
-  subnet_ids   = module.network.private_subnets
+  cluster_name = module.eks.cluster_name        # Nome do cluster EKS criado
+  subnet_ids   = module.network.private_subnets # Subnets privadas para os nodes
 
   node_groups = {
+    # Criado apenas um tipo de Node Group que será usado no EKS
     default = {
-      node_role_arn  = module.iam.node_role_arn
-      desired_size   = 1
-      min_size       = 1
-      max_size       = 2
-      instance_types = ["t3.small"] # Others: t3.micro, t3.medium
-      disk_size      = 20
-      ami_type       = "AL2_x86_64"
-      capacity_type  = "ON_DEMAND"
+      node_role_arn  = module.iam.node_role_arn # Role IAM para os nodes
+      desired_size   = 1                        # 1 node rodando
+      min_size       = 1                        # Mínimo 1 node
+      max_size       = 2                        # Máximo 2 nodes (auto-scaling)
+      instance_types = ["t3.small"]             # Instância com 2GB RAM
+      disk_size      = 20                       # 20GB de disco
+      ami_type       = "AL2023_x86_64_STANDARD" # Amazon Linux 2023 | Outros: "AL2_x86_64" Amazon Linux 2 (Legado)
+      capacity_type  = "ON_DEMAND"              # Instâncias sob demanda
     }
   }
 
@@ -66,6 +67,7 @@ module "nodegroups" {
   depends_on = [module.eks]
 }
 
+# TODO: Necessário verificar daqui para baixo
 module "documentdb" {
   source     = "../../modules/documentdb"
   name       = local.name
