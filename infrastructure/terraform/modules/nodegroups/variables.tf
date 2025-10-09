@@ -1,14 +1,15 @@
 variable "cluster_name" {
+  description = "Nome do cluster EKS"
   type        = string
-  description = "Name of the EKS cluster"
 }
 
 variable "subnet_ids" {
+  description = "Lista de IDs das subnets para os node groups"
   type        = list(string)
-  description = "List of subnet IDs for the node groups"
 }
 
 variable "node_groups" {
+  description = "Mapa de configurações dos node groups"
   type = map(object({
     node_role_arn  = string
     desired_size   = number
@@ -19,11 +20,10 @@ variable "node_groups" {
     ami_type       = optional(string, "AL2_x86_64")
     capacity_type  = optional(string, "ON_DEMAND")
   }))
-  description = "Map of node group configurations"
 }
 
 variable "tags" {
+  description = "Tags para aplicar aos recursos"
   type        = map(string)
-  description = "Tags to apply to resources"
   default     = {}
 }
