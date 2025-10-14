@@ -1,0 +1,44 @@
+import faker from 'faker';
+import { Task } from 'src/task/domain/entities/task.entity';
+import { User } from 'src/user/domain/entities/user.entity';
+
+export class TaskBuilder {
+  static build(user: User, overrides?: Partial<Task>): Task {
+    const {
+      id = faker.datatype.uuid(),
+      title = faker.lorem.words(3),
+      description = faker.lorem.sentence(),
+      status = 'pending' as const,
+      createdAt = new Date('2024-01-01T10:00:00Z'),
+      updatedAt = new Date('2024-01-01T10:00:00Z')
+    } = overrides || {};
+
+    return new Task(id, user.id, title, description, status, createdAt, updatedAt);
+  }
+
+  static buildCollection(user: User, count: number = 2): Task[] {
+    return Array.from({ length: count }, (_, index) => 
+      this.build(user, { id: `task-${index + 1}` })
+    );
+  }
+
+  // Cenários específicos abaixo
+  static buildDone(user: User): Task {
+    return this.build(user, { 
+      status: 'done',
+      updatedAt: new Date('2024-01-02T10:00:00Z')
+    });
+  }
+
+  static buildInProgress(user: User): Task {
+    return this.build(user, { status: 'in-progress' });
+  }
+
+  static buildWithTitle(user: User, title: string): Task {
+    return this.build(user, { title });
+  }
+
+  static buildWithoutDescription(user: User): Task {
+    return this.build(user, { description: '' });
+  }
+}
