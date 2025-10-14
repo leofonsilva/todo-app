@@ -10,6 +10,7 @@ import { AuthController } from 'src/auth/presentation/auth.controller';
 import { UserModule } from 'src/user/user.module';
 
 import { ILoginUseCase } from './application/usecases/login.usecase.interface';
+import { JwtExpiresIn } from 'src/shared/types/jwt';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { ILoginUseCase } from './application/usecases/login.usecase.interface';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: configService.get<string>('JWT_EXPIRES_IN') },
+        signOptions: { expiresIn: configService.get<JwtExpiresIn>('JWT_EXPIRES_IN') },
       }),
     }),
     forwardRef(() => UserModule)
