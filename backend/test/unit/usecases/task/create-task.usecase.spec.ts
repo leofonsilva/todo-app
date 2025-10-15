@@ -2,14 +2,14 @@ import { Test } from '@nestjs/testing';
 import { CreateTaskUseCase } from 'src/task/application/usecases/create-task.usecase';
 import { ITaskRepository } from 'src/task/domain/repositories/task.repository.interface';
 import { CurrentUserService } from 'src/shared/services/current-user.service';
-import { UserBuilder } from 'test/builders/entities/user.builder';
-import { TaskBuilder } from 'test/builders/entities/task.builder';
-import { CreateTaskRequestBuilder } from 'test/builders/requests/create-task-request.builder';
+import { UserEntityBuilder } from 'test/builders/entities/user.entity.builder';
+import { TaskEntityBuilder } from 'test/builders/entities/task.entity.builder';
+import { CreateTaskDtoBuilder } from 'test/builders/dto/create-task.dto.builder';
 import { MockTaskRepository } from 'test/support/mocks/task-repository.mock';
 import { setupTestEnvironment, cleanupTestEnvironment } from 'test/support/utils/test-setup';
 
 describe('CreateTaskUseCase', () => {
-  let createTaskUseCase: CreateTaskUseCase;
+  let sut: CreateTaskUseCase;
   let mockTaskRepository: MockTaskRepository;
   let currentUserService: CurrentUserService;
 
@@ -29,7 +29,7 @@ describe('CreateTaskUseCase', () => {
       ],
     }).compile();
 
-    createTaskUseCase = moduleRef.get<CreateTaskUseCase>(CreateTaskUseCase);
+    sut = moduleRef.get<CreateTaskUseCase>(CreateTaskUseCase);
   });
 
   afterEach(() => {
@@ -38,12 +38,11 @@ describe('CreateTaskUseCase', () => {
 
   describe('Success cases', () => {
     it('should create task successfully with all data', async () => {
-      // Arrange
-      const { user } = UserBuilder.build();
-      const request = CreateTaskRequestBuilder.build();
-      const expectedTask = TaskBuilder.build(user, {
+      const request = CreateTaskDtoBuilder.build();
+      const { user } = UserEntityBuilder.build();
+      const taskEntity = TaskEntityBuilder.build(user, {
         title: request.title,
-        description: request.description!,
+        description: request.description
       });
 
       currentUserService.setUser({
@@ -51,13 +50,11 @@ describe('CreateTaskUseCase', () => {
         email: user.email
       });
 
-      mockTaskRepository.mockCreateSuccess(expectedTask);
+      mockTaskRepository.createSuccess(taskEntity);
 
-      // Act
-      const result = await createTaskUseCase.execute(request);
+      const result = await sut.execute(request);
 
-      // Assert
-      expect(result).toEqual(expectedTask);
+      expect(result).toEqual(taskEntity);
       expect(mockTaskRepository.create).toHaveBeenCalledWith(
         expect.objectContaining({
           userId: user.id,
@@ -71,22 +68,19 @@ describe('CreateTaskUseCase', () => {
 
   describe('Error cases', () => {
     it('should throw error when user not found', async () => {
-      // Arrange
-      const request = CreateTaskRequestBuilder.build();
+      const request = CreateTaskDtoBuilder.build();
 
-      // Não configura usuário - currentUserService.getUser() vai lançar erro
+      // Não configura usuário e currentUserService.getUser() vai lançar erro
       // currentUserService.setUser();
 
-      // Act & Assert
-      await expect(createTaskUseCase.execute(request))
-        .rejects
-        .toThrow('User not set in CurrentUserService');
+      const act = () => sut.execute(request);
+
+      await expect(act()).rejects.toThrow('User not set in CurrentUserService');
     });
 
     it('should throw error when repository fails', async () => {
-      // Arrange
-      const { user } = UserBuilder.build();
-      const request = CreateTaskRequestBuilder.build();
+      const request = CreateTaskDtoBuilder.build();
+      const { user } = UserEntityBuilder.build();
       const repositoryError = new Error('Database connection failed');
 
       currentUserService.setUser({
@@ -94,12 +88,11 @@ describe('CreateTaskUseCase', () => {
         email: user.email
       });
 
-      mockTaskRepository.mockCreateError(repositoryError);
+      mockTaskRepository.createError(repositoryError);
 
-      // Act & Assert
-      await expect(createTaskUseCase.execute(request))
-        .rejects
-        .toThrow('Database connection failed');
+      const act = () => sut.execute(request);
+
+      await expect(act()).rejects.toThrow('Database connection failed');
     });
   });
 });

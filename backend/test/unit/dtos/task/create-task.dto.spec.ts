@@ -1,43 +1,48 @@
 import { validate } from 'class-validator';
 import { CreateTaskDto } from 'src/task/application/dtos/create-task.dto';
-import { CreateTaskRequestBuilder } from 'test/builders/requests/create-task-request.builder';
+import { CreateTaskDtoBuilder } from 'test/builders/dto/create-task.dto.builder';
 
 describe('CreateTaskDto', () => {
+  describe('Success cases', () => {
+    it('should pass validation without description', async () => {
+      const request = CreateTaskDtoBuilder.build({ description: undefined });
+      const sut = Object.assign(new CreateTaskDto(), request);
 
-  it('should pass validation without description', async () => {
-    // Arrange
-    const request = CreateTaskRequestBuilder.buildWithoutDescription();
-    const dto = Object.assign(new CreateTaskDto(), request);
+      const errors = await validate(sut);
 
-    // Act
-    const errors = await validate(dto);
+      expect(errors.length).toBe(0);
+    });
 
-    // Assert
-    expect(errors.length).toBe(0);
+    it('should pass validation with empty description string', async () => {
+      const request = CreateTaskDtoBuilder.build({ description: '' });
+      const sut = Object.assign(new CreateTaskDto(), request);
+
+      const errors = await validate(sut);
+
+      expect(errors.length).toBe(0);
+    });
   });
 
-  it('should pass validation with empty description string', async () => {
-    // Arrange
-    const request = CreateTaskRequestBuilder.buildWithEmptyDescription();
-    const dto = Object.assign(new CreateTaskDto(), request);
+  describe('Error cases', () => {
+    it('should fail validation when is without title', async () => {
+      const request = CreateTaskDtoBuilder.build({ title: undefined });
+      const sut = Object.assign(new CreateTaskDto(), request);
 
-    // Act
-    const errors = await validate(dto);
+      const errors = await validate(sut);
 
-    // Assert
-    expect(errors.length).toBe(0);
-  });
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].constraints).toHaveProperty('isNotEmpty');
+      expect(errors[0].constraints).toHaveProperty('isString');
+    });
 
-  it('should fail validation when title is empty', async () => {
-    // Arrange
-    const request = CreateTaskRequestBuilder.buildEmptyTitle();
-    const dto = Object.assign(new CreateTaskDto(), request);
+    it('should fail validation when title is empty', async () => {
+      const request = CreateTaskDtoBuilder.build({ title: '' });
+      const sut = Object.assign(new CreateTaskDto(), request);
 
-    // Act
-    const errors = await validate(dto);
+      const errors = await validate(sut);
 
-    // Assert
-    expect(errors.length).toBeGreaterThan(0);
-    expect(errors[0].constraints).toHaveProperty('isNotEmpty');
-  });
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].constraints).toHaveProperty('isNotEmpty');
+    });
+  });  
 });

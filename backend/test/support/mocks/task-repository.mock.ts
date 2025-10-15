@@ -10,34 +10,34 @@ export class MockTaskRepository implements ITaskRepository {
   public delete = jest.fn();
 
   // Create
-  mockCreateSuccess(task: Task): void {
+  createSuccess(task: Task): void {
     this.create.mockResolvedValue(task);
   }
 
-  mockCreateError(error: Error): void {
+  createError(error: Error): void {
     this.create.mockRejectedValue(error);
   }
 
   // Find
-  mockFindAllSuccess(tasks: Task[]): void {
+  findAllSuccess(tasks: Task[]): void {
     this.findAll.mockResolvedValue(tasks);
   }
 
-  mockFindByIdSuccess(task: Task | null): void {
+  findByIdSuccess(task: Task | null): void {
     this.findById.mockResolvedValue(task);
   }
 
-  mockFindByUserSuccess(tasks: Task[]): void {
+  findByUserSuccess(tasks: Task[]): void {
     this.findByUserId.mockResolvedValue(tasks);
   }
 
   // Update  
-  mockUpdateSuccess(task: Task): void {
+  updateSuccess(task: Task): void {
     this.update.mockResolvedValue(task);
   }
 
   // Delete
-  mockDeleteSuccess(): void {
+  deleteSuccess(): void {
     this.delete.mockResolvedValue(undefined);
   }
 

@@ -2,7 +2,7 @@ import faker from 'faker';
 import { Task } from 'src/task/domain/entities/task.entity';
 import { User } from 'src/user/domain/entities/user.entity';
 
-export class TaskBuilder {
+export class TaskEntityBuilder {
   static build(user: User, overrides?: Partial<Task>): Task {
     const {
       id = faker.datatype.uuid(),
@@ -20,25 +20,5 @@ export class TaskBuilder {
     return Array.from({ length: count }, (_, index) => 
       this.build(user, { id: `task-${index + 1}` })
     );
-  }
-
-  // Cenários específicos abaixo
-  static buildDone(user: User): Task {
-    return this.build(user, { 
-      status: 'done',
-      updatedAt: new Date('2024-01-02T10:00:00Z')
-    });
-  }
-
-  static buildInProgress(user: User): Task {
-    return this.build(user, { status: 'in-progress' });
-  }
-
-  static buildWithTitle(user: User, title: string): Task {
-    return this.build(user, { title });
-  }
-
-  static buildWithoutDescription(user: User): Task {
-    return this.build(user, { description: '' });
   }
 }

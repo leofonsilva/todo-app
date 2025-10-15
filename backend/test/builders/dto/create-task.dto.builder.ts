@@ -1,0 +1,13 @@
+import faker from 'faker';
+import { CreateTaskDto } from 'src/task/application/dtos/create-task.dto';
+
+export class CreateTaskDtoBuilder {
+  static build(overrides?: Partial<CreateTaskDto>): CreateTaskDto {
+    const defaultRequest = {
+      title: faker.lorem.words(3),
+      description: faker.lorem.sentence(),
+    };
+
+    return { ...defaultRequest, ...overrides };
+  }
+}
