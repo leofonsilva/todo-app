@@ -6,16 +6,11 @@ import { UserEntityBuilder } from 'test/builders/entities/user.entity.builder';
 import { TaskEntityBuilder } from 'test/builders/entities/task.entity.builder';
 import { CreateTaskDtoBuilder } from 'test/builders/dto/create-task.dto.builder';
 import { MockTaskRepository } from 'test/support/mocks/task-repository.mock';
-import { setupTestEnvironment, cleanupTestEnvironment } from 'test/support/utils/test-setup';
 
 describe('CreateTaskUseCase', () => {
   let sut: CreateTaskUseCase;
   let mockTaskRepository: MockTaskRepository;
   let currentUserService: CurrentUserService;
-
-  beforeAll(() => {
-    setupTestEnvironment();
-  });
 
   beforeEach(async () => {
     mockTaskRepository = new MockTaskRepository();
@@ -30,10 +25,6 @@ describe('CreateTaskUseCase', () => {
     }).compile();
 
     sut = moduleRef.get<CreateTaskUseCase>(CreateTaskUseCase);
-  });
-
-  afterEach(() => {
-    cleanupTestEnvironment();
   });
 
   describe('Success cases', () => {
