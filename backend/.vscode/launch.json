@@ -2,44 +2,73 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch NestJS (Debug)",
+      "name": "🚀 Launch NestJS",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": [
-        "run",
-        "start:debug"
+      "program": "${workspaceFolder}/node_modules/.bin/nest",
+      "args": [
+        "start",
+        "--debug",
+        "9231",
+        "--port",
+        "3001",
+        "--watch"
       ],
+      "env": {
+        "NODE_ENV": "development"
+      },
       "restart": true,
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}",
       "skipFiles": [
         "<node_internals>/**"
-      ]
+      ],
+      "windows": {
+        "program": "${workspaceFolder}/node_modules/@nestjs/cli/bin/nest.js"
+      }
     },
     {
-      "name": "Attach to NestJS",
-      "type": "node",
-      "request": "attach",
-      "port": 9231,
-      "restart": true,
-      "cwd": "${workspaceFolder}",
-      "skipFiles": [
-        "<node_internals>/**"
-      ]
-    },
-    {
-      "name": "Debug Jest Tests",
+      "name": "🧪 Debug Jest Unit",
       "type": "node",
       "request": "launch",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": [
-        "run",
-        "test:debug"
+      "program": "${workspaceFolder}/node_modules/.bin/jest",
+      "args": [
+        "--testRegex='.*\\.spec\\.ts$'",
+        "--runInBand",
+        "--no-cache"
       ],
+      "env": {
+        "NODE_ENV": "test"
+      },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
-      "cwd": "${workspaceFolder}",
+      "windows": {
+        "program": "${workspaceFolder}/node_modules/jest/bin/jest"
+      },
+      "skipFiles": [
+        "<node_internals>/**",
+        "**/node_modules/**"
+      ]
+    },
+    {
+      "name": "📡 Debug Jest Integration",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/jest",
+      "args": [
+        "--config",
+        "jest-e2e.config.js",
+        "--runInBand",
+        "--no-cache"
+      ],
+      "env": {
+        "NODE_ENV": "test"
+      },
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "windows": {
+        "program": "${workspaceFolder}/node_modules/jest/bin/jest"
+      },
       "skipFiles": [
         "<node_internals>/**",
         "**/node_modules/**"
