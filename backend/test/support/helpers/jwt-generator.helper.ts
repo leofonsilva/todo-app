@@ -1,7 +1,7 @@
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/user/domain/entities/user.entity';
 
-export class TestJwtGenerator {
+export class JwtGeneratorHelper {
   private jwtService: JwtService;
 
   constructor() {

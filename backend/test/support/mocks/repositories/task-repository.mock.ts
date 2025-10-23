@@ -1,7 +1,7 @@
 import { Task } from 'src/task/domain/entities/task.entity';
 import { ITaskRepository } from 'src/task/domain/repositories/task.repository.interface';
 
-export class MockTaskRepository implements ITaskRepository {
+export class TaskRepositoryMock implements ITaskRepository {
   public create = jest.fn();
   public findAll = jest.fn();
   public findById = jest.fn();
@@ -32,8 +32,12 @@ export class MockTaskRepository implements ITaskRepository {
   }
 
   // Update  
-  updateSuccess(task: Task): void {
+  updateSuccess(task: Task | null): void {
     this.update.mockResolvedValue(task);
+  }
+
+  updateError(error: Error): void {
+    this.update.mockRejectedValue(error);
   }
 
   // Delete

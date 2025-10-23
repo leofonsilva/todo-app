@@ -1,24 +1,33 @@
 import request from 'supertest';
+import { INestApplication } from '@nestjs/common';
 import { TestAppFactory } from 'test/support/setup/test-app.factory';
-import { TestDatabaseSeeder } from 'test/support/setup/test-database.seeder';
-import { TestJwtGenerator } from 'test/support/auth/test-jwt.generator';
-import { CreateTaskDtoBuilder } from 'test/builders/dto/create-task.dto.builder';
+import { JwtGeneratorHelper } from 'test/support/helpers/jwt-generator.helper';
+import { CreateTaskDtoBuilder } from 'test/support/builders/dto/create-task.dto.builder';
+import { UserEntityBuilder } from 'test/support/builders/entities/user.entity.builder';
+import { TaskEntityBuilder } from 'test/support/builders/entities/task.entity.builder';
+import { TaskRepositoryMock } from 'test/support/mocks/repositories/task-repository.mock';
+import { UserRepositoryMock } from 'test/support/mocks/repositories/user-repository.mock';
 
 describe('TaskController - Create', () => {
   let testAppFactory: TestAppFactory;
-  let databaseSeeder: TestDatabaseSeeder;
-  let jwtGenerator: TestJwtGenerator;
-  let app: any;
+  let app: INestApplication;
+  let jwtGeneratorHelper: JwtGeneratorHelper;
+  let taskRepositoryMock: TaskRepositoryMock;
+  let userRepositoryMock: UserRepositoryMock;
 
   beforeAll(async () => {
     testAppFactory = new TestAppFactory();
     app = await testAppFactory.initialize();
-    databaseSeeder = new TestDatabaseSeeder(app);
-    jwtGenerator = new TestJwtGenerator();
+    
+    taskRepositoryMock = testAppFactory.getTaskRepository();
+    userRepositoryMock = testAppFactory.getUserRepository();
+    
+    jwtGeneratorHelper = new JwtGeneratorHelper();
   }, 30000);
 
-  beforeEach(async () => {
-    await databaseSeeder.cleanup();
+  beforeEach(() => {
+    taskRepositoryMock.clearMocks();
+    userRepositoryMock.clearMocks();
   });
 
   afterAll(async () => {
@@ -28,9 +37,18 @@ describe('TaskController - Create', () => {
   describe('POST /tasks', () => {
     describe('Success cases', () => {
       it('should create task successfully with valid JWT', async () => {
-        const user = await databaseSeeder.seedUser();
+        const user = UserEntityBuilder.build().user;
         const requestBody = CreateTaskDtoBuilder.build();
-        const validToken = jwtGenerator.generateForUser(user);
+        const validToken = jwtGeneratorHelper.generateForUser(user);
+
+        const expectedTask = TaskEntityBuilder.build(user, {
+          title: requestBody.title,
+          description: requestBody.description,
+          status: 'pending'
+        });
+
+        userRepositoryMock.findByIdSuccess(user);
+        taskRepositoryMock.createSuccess(expectedTask);
 
         const response = await request(app.getHttpServer())
           .post('/tasks')
@@ -38,16 +56,25 @@ describe('TaskController - Create', () => {
           .send(requestBody);
 
         expect(response.status).toBe(201);
-        expect(response.body).toHaveProperty('id');
+        expect(response.body.id).toBe(expectedTask.id);
         expect(response.body.title).toBe(requestBody.title);
         expect(response.body.userId).toBe(user.id);
         expect(response.body.status).toBe('pending');
       });
 
       it('should create task without description', async () => {
-        const user = await databaseSeeder.seedUser();
+        const user = UserEntityBuilder.build().user;
         const requestBody = CreateTaskDtoBuilder.build({ description: undefined });
-        const validToken = jwtGenerator.generateForUser(user);
+        const validToken = jwtGeneratorHelper.generateForUser(user);
+
+        const expectedTask = TaskEntityBuilder.build(user, {
+          title: requestBody.title,
+          description: '', // Valor default do use case
+          status: 'pending'
+        });
+
+        userRepositoryMock.findByIdSuccess(user);
+        taskRepositoryMock.createSuccess(expectedTask);
 
         const response = await request(app.getHttpServer())
           .post('/tasks')
@@ -62,7 +89,7 @@ describe('TaskController - Create', () => {
     describe('Error cases', () => {
       it('should return 401 when JWT token is invalid', async () => {
         const requestBody = CreateTaskDtoBuilder.build();
-        const invalidToken = jwtGenerator.generateInvalidToken();
+        const invalidToken = jwtGeneratorHelper.generateInvalidToken();
 
         const response = await request(app.getHttpServer())
           .post('/tasks')
@@ -83,9 +110,11 @@ describe('TaskController - Create', () => {
       });
 
       it('should validate DTO and return 400 for empty title', async () => {
-        const user = await databaseSeeder.seedUser();
+        const user = UserEntityBuilder.build().user;
         const requestBody = CreateTaskDtoBuilder.build({ title: '' });
-        const validToken = jwtGenerator.generateForUser(user);
+        const validToken = jwtGeneratorHelper.generateForUser(user);
+
+        userRepositoryMock.findByIdSuccess(user);
 
         const response = await request(app.getHttpServer())
           .post('/tasks')

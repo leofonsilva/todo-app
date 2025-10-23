@@ -2,24 +2,24 @@ import { Test } from '@nestjs/testing';
 import { CreateTaskUseCase } from 'src/task/application/usecases/create-task.usecase';
 import { ITaskRepository } from 'src/task/domain/repositories/task.repository.interface';
 import { CurrentUserService } from 'src/shared/services/current-user.service';
-import { UserEntityBuilder } from 'test/builders/entities/user.entity.builder';
-import { TaskEntityBuilder } from 'test/builders/entities/task.entity.builder';
-import { CreateTaskDtoBuilder } from 'test/builders/dto/create-task.dto.builder';
-import { MockTaskRepository } from 'test/support/mocks/task-repository.mock';
+import { UserEntityBuilder } from 'test/support/builders/entities/user.entity.builder';
+import { TaskEntityBuilder } from 'test/support/builders/entities/task.entity.builder';
+import { CreateTaskDtoBuilder } from 'test/support/builders/dto/create-task.dto.builder';
+import { TaskRepositoryMock } from 'test/support/mocks/repositories/task-repository.mock';
 
 describe('CreateTaskUseCase', () => {
   let sut: CreateTaskUseCase;
-  let mockTaskRepository: MockTaskRepository;
+  let taskRepositoryMock: TaskRepositoryMock;
   let currentUserService: CurrentUserService;
 
   beforeEach(async () => {
-    mockTaskRepository = new MockTaskRepository();
+    taskRepositoryMock = new TaskRepositoryMock();
     currentUserService = new CurrentUserService();
 
     const moduleRef = await Test.createTestingModule({
       providers: [
         CreateTaskUseCase,
-        { provide: ITaskRepository, useValue: mockTaskRepository },
+        { provide: ITaskRepository, useValue: taskRepositoryMock },
         { provide: CurrentUserService, useValue: currentUserService }
       ],
     }).compile();
@@ -41,12 +41,12 @@ describe('CreateTaskUseCase', () => {
         email: user.email
       });
 
-      mockTaskRepository.createSuccess(taskEntity);
+      taskRepositoryMock.createSuccess(taskEntity);
 
       const result = await sut.execute(request);
 
       expect(result).toEqual(taskEntity);
-      expect(mockTaskRepository.create).toHaveBeenCalledWith(
+      expect(taskRepositoryMock.create).toHaveBeenCalledWith(
         expect.objectContaining({
           userId: user.id,
           title: request.title,
@@ -79,7 +79,7 @@ describe('CreateTaskUseCase', () => {
         email: user.email
       });
 
-      mockTaskRepository.createError(repositoryError);
+      taskRepositoryMock.createError(repositoryError);
 
       const act = () => sut.execute(request);
 
