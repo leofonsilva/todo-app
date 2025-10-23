@@ -16,6 +16,11 @@ module.exports = {
     'src/**/*.(t|j)s',
     '!src/main.ts',
     '!src/**/*.module.(t|j)s',
+    '!src/**/*.entity.(t|j)s',
+    '!src/**/*.schema.(t|j)s',
+    '!src/**/*.repository.(t|j)s',
+    '!src/**/*.interface.(t|j)s',
+    '!src/**/*.controller.(t|j)s',
   ],
   coverageDirectory: './coverage',
 };
