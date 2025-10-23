@@ -11,19 +11,19 @@ export class RegisterUserUseCase implements IRegisterUserUseCase {
     private readonly authService: AuthService,
   ) { }
 
-  async execute(data: RegisterUserDto): Promise<{ access_token: string }> {
-    const exists = await this.userRepository.findByEmail(data.email);
+  async execute(request: RegisterUserDto): Promise<{ access_token: string }> {
+    const exists = await this.userRepository.findByEmail(request.email);
 
     if (exists) {
       throw new ConflictException('Email already in use');
     }
 
-    const hashed = await this.authService.hashPassword(data.password);
+    const hashed = await this.authService.hashPassword(request.password);
 
     const user = await this.userRepository.create({
       id: '',
-      name: data.name,
-      email: data.email,
+      name: request.name,
+      email: request.email,
       password: hashed,
       createdAt: new Date(),
     });

@@ -11,10 +11,10 @@ export class LoginUseCase implements ILoginUseCase {
     private readonly authService: AuthService,
   ) { }
 
-  async execute(data: LoginDto): Promise<{ access_token: string }> {
-    const user = await this.userRepo.findByEmail(data.email);
+  async execute(request: LoginDto): Promise<{ access_token: string }> {
+    const user = await this.userRepo.findByEmail(request.email);
 
-    if (!user || !(await this.authService.comparePassword(data.password, user.password))) {
+    if (!user || !(await this.authService.comparePassword(request.password, user.password))) {
       throw new UnauthorizedException('Invalid credentials');
     }
 

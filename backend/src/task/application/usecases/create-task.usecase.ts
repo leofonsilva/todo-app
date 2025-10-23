@@ -12,14 +12,14 @@ export class CreateTaskUseCase implements ICreateTaskUseCase {
     private readonly currentUserService: CurrentUserService
   ) { }
 
-  async execute(data: CreateTaskDto): Promise<Task> {
+  async execute(request: CreateTaskDto): Promise<Task> {
     const userId = this.currentUserService.getUserId();
     
     const task = new Task(
       '',
       userId,
-      data.title,
-      data.description || '',
+      request.title,
+      request.description || '',
       'pending',
       new Date(),
       new Date()

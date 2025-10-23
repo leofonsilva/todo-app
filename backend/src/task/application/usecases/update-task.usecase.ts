@@ -12,13 +12,13 @@ export class UpdateTaskUseCase implements IUpdateTaskUseCase {
     private readonly currentUserService: CurrentUserService
   ) { }
 
-  async execute(id: string, data: UpdateTaskDto): Promise<Task> {
+  async execute(id: string, request: UpdateTaskDto): Promise<Task> {
     const userId = this.currentUserService.getUserId();
 
     const partialTask: Partial<Task> = {
-      title: data.title,
-      description: data.description ?? '',
-      status: data.status ?? 'pending',
+      title: request.title,
+      description: request.description ?? '',
+      status: request.status ?? 'pending',
       userId,
       updatedAt: new Date()
     };

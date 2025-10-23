@@ -4,5 +4,5 @@ import { Task } from 'src/task/domain/entities/task.entity';
 export const ICreateTaskUseCase = Symbol('ICreateTaskUseCase');
 
 export interface ICreateTaskUseCase {
-  execute(data: CreateTaskDto): Promise<Task>;
+  execute(request: CreateTaskDto): Promise<Task>;
 }

@@ -13,8 +13,8 @@ export class UserController {
   ) { }
 
   @Post('register')
-  async register(@Body() dto: RegisterUserDto): Promise<{ access_token: string }> {
-    return this.registerUseCase.execute(dto);
+  async register(@Body() request: RegisterUserDto): Promise<{ access_token: string }> {
+    return this.registerUseCase.execute(request);
   }
 
   @UseGuards(JwtAuthGuard)

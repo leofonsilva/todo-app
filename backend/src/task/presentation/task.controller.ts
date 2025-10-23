@@ -21,8 +21,9 @@ export class TaskController {
   ) { }
 
   @Post()
-  async create(@Body() body: CreateTaskDto): Promise<Task> {
-    return await this.createTaskUseCase.execute(body);
+  async create(@Body() request: CreateTaskDto): Promise<Task> {
+    var teste = await this.createTaskUseCase.execute(request);
+    return teste;
   }
 
   @Get()
@@ -36,8 +37,8 @@ export class TaskController {
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() body: UpdateTaskDto): Promise<Task> {
-    return await this.updateTaskUseCase.execute(id, body);
+  async update(@Param('id') id: string, @Body() request: UpdateTaskDto): Promise<Task> {
+    return await this.updateTaskUseCase.execute(id, request);
   }
 
   @Delete(':id')
