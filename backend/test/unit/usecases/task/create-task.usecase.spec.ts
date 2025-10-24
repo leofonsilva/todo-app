@@ -41,7 +41,7 @@ describe('CreateTaskUseCase', () => {
         email: user.email
       });
 
-      taskRepositoryMock.createSuccess(taskEntity);
+      taskRepositoryMock.create.mockResolvedValue(taskEntity);
 
       const result = await sut.execute(request);
 
@@ -61,9 +61,6 @@ describe('CreateTaskUseCase', () => {
     it('should throw error when user not found', async () => {
       const request = CreateTaskDtoBuilder.build();
 
-      // Não configura usuário e currentUserService.getUser() vai lançar erro
-      // currentUserService.setUser();
-
       const act = () => sut.execute(request);
 
       await expect(act()).rejects.toThrow('User not set in CurrentUserService');
@@ -79,7 +76,7 @@ describe('CreateTaskUseCase', () => {
         email: user.email
       });
 
-      taskRepositoryMock.createError(repositoryError);
+      taskRepositoryMock.create.mockRejectedValue(repositoryError);
 
       const act = () => sut.execute(request);
 

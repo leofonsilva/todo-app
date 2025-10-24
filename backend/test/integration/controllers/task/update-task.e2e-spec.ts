@@ -49,8 +49,8 @@ describe('TaskController - Update', () => {
           updatedAt: expect.any(Date)
         });
 
-        userRepositoryMock.findByIdSuccess(user);
-        taskRepositoryMock.updateSuccess(updatedTask);
+        userRepositoryMock.findById.mockResolvedValue(user);
+        taskRepositoryMock.update.mockResolvedValue(updatedTask);
 
         const response = await request(app.getHttpServer())
           .put(`/tasks/${existingTaskId}`)
@@ -83,8 +83,8 @@ describe('TaskController - Update', () => {
           updatedAt: expect.any(Date)
         });
 
-        userRepositoryMock.findByIdSuccess(user);
-        taskRepositoryMock.updateSuccess(updatedTask);
+        userRepositoryMock.findById.mockResolvedValue(user);
+        taskRepositoryMock.update.mockResolvedValue(updatedTask);
 
         const response = await request(app.getHttpServer())
           .put(`/tasks/${existingTaskId}`)
@@ -110,8 +110,8 @@ describe('TaskController - Update', () => {
           updatedAt: expect.any(Date)
         });
 
-        userRepositoryMock.findByIdSuccess(user);
-        taskRepositoryMock.updateSuccess(updatedTask);
+        userRepositoryMock.findById.mockResolvedValue(user);
+        taskRepositoryMock.update.mockResolvedValue(updatedTask);
 
         const response = await request(app.getHttpServer())
           .put(`/tasks/${existingTaskId}`)
@@ -154,8 +154,8 @@ describe('TaskController - Update', () => {
         const updateData = UpdateTaskDtoBuilder.build();
         const validToken = jwtGeneratorHelper.generateForUser(user);
 
-        userRepositoryMock.findByIdSuccess(user);
-        taskRepositoryMock.updateSuccess(null); // Estoura exceção quando repositório retorna nulo
+        userRepositoryMock.findById.mockResolvedValue(user);
+        taskRepositoryMock.update.mockResolvedValue(null); // Estoura exceção no usecase quando repositório retorna nulo
 
         const response = await request(app.getHttpServer())
           .put(`/tasks/${nonExistentTaskId}`)
@@ -172,8 +172,8 @@ describe('TaskController - Update', () => {
         const updateData = UpdateTaskDtoBuilder.build();
         const validTokenUser2 = jwtGeneratorHelper.generateForUser(user2);
 
-        userRepositoryMock.findByIdSuccess(user2);
-        taskRepositoryMock.updateSuccess(null); // Estoura exceção quando repositório retorna nulo
+        userRepositoryMock.findById.mockResolvedValue(user2);
+        taskRepositoryMock.update.mockResolvedValue(null); // Estoura exceção no usecase quando repositório retorna nulo
 
         const response = await request(app.getHttpServer())
           .put(`/tasks/${taskFromUser1Id}`)
@@ -189,7 +189,7 @@ describe('TaskController - Update', () => {
         const updateData = UpdateTaskDtoBuilder.build({ title: '' });
         const validToken = jwtGeneratorHelper.generateForUser(user);
 
-        userRepositoryMock.findByIdSuccess(user);
+        userRepositoryMock.findById.mockResolvedValue(user);
 
         const response = await request(app.getHttpServer())
           .put(`/tasks/${existingTaskId}`)
@@ -208,7 +208,7 @@ describe('TaskController - Update', () => {
         });
         const validToken = jwtGeneratorHelper.generateForUser(user);
 
-        userRepositoryMock.findByIdSuccess(user);
+        userRepositoryMock.findById.mockResolvedValue(user);
 
         const response = await request(app.getHttpServer())
           .put(`/tasks/${existingTaskId}`)

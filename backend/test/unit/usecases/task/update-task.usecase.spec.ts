@@ -45,7 +45,7 @@ describe.only('UpdateTaskUseCase', () => {
         email: user.email
       });
 
-      taskRepositoryMock.updateSuccess(updatedTask);
+      taskRepositoryMock.update.mockResolvedValue(updatedTask);
 
       const result = await sut.execute(taskId, request);
 
@@ -82,7 +82,7 @@ describe.only('UpdateTaskUseCase', () => {
         email: user.email
       });
 
-      taskRepositoryMock.updateSuccess(updatedTask);
+      taskRepositoryMock.update.mockResolvedValue(updatedTask);
 
       const result = await sut.execute(taskId, request);
 
@@ -118,7 +118,7 @@ describe.only('UpdateTaskUseCase', () => {
         email: user.email
       });
 
-      taskRepositoryMock.updateSuccess(null);
+      taskRepositoryMock.update.mockResolvedValue(null);
 
       const act = () => sut.execute(taskId, request);
 
@@ -137,7 +137,7 @@ describe.only('UpdateTaskUseCase', () => {
         email: user.email
       });
 
-      taskRepositoryMock.updateError(repositoryError);
+      taskRepositoryMock.update.mockRejectedValue(repositoryError);
 
       const act = () => sut.execute(taskId, request);
 

@@ -47,8 +47,8 @@ describe('TaskController - Create', () => {
           status: 'pending'
         });
 
-        userRepositoryMock.findByIdSuccess(user);
-        taskRepositoryMock.createSuccess(expectedTask);
+        userRepositoryMock.findById.mockResolvedValue(user);
+        taskRepositoryMock.create.mockResolvedValue(expectedTask);
 
         const response = await request(app.getHttpServer())
           .post('/tasks')
@@ -73,8 +73,8 @@ describe('TaskController - Create', () => {
           status: 'pending'
         });
 
-        userRepositoryMock.findByIdSuccess(user);
-        taskRepositoryMock.createSuccess(expectedTask);
+        userRepositoryMock.findById.mockResolvedValue(user);
+        taskRepositoryMock.create.mockResolvedValue(expectedTask);
 
         const response = await request(app.getHttpServer())
           .post('/tasks')
@@ -114,7 +114,7 @@ describe('TaskController - Create', () => {
         const requestBody = CreateTaskDtoBuilder.build({ title: '' });
         const validToken = jwtGeneratorHelper.generateForUser(user);
 
-        userRepositoryMock.findByIdSuccess(user);
+        userRepositoryMock.findById.mockResolvedValue(user);
 
         const response = await request(app.getHttpServer())
           .post('/tasks')

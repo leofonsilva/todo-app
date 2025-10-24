@@ -1,4 +1,3 @@
-import { Task } from 'src/task/domain/entities/task.entity';
 import { ITaskRepository } from 'src/task/domain/repositories/task.repository.interface';
 
 export class TaskRepositoryMock implements ITaskRepository {
@@ -8,42 +7,6 @@ export class TaskRepositoryMock implements ITaskRepository {
   public findByUserId = jest.fn();
   public update = jest.fn();
   public delete = jest.fn();
-
-  // Create
-  createSuccess(task: Task): void {
-    this.create.mockResolvedValue(task);
-  }
-
-  createError(error: Error): void {
-    this.create.mockRejectedValue(error);
-  }
-
-  // Find
-  findAllSuccess(tasks: Task[]): void {
-    this.findAll.mockResolvedValue(tasks);
-  }
-
-  findByIdSuccess(task: Task | null): void {
-    this.findById.mockResolvedValue(task);
-  }
-
-  findByUserSuccess(tasks: Task[]): void {
-    this.findByUserId.mockResolvedValue(tasks);
-  }
-
-  // Update  
-  updateSuccess(task: Task | null): void {
-    this.update.mockResolvedValue(task);
-  }
-
-  updateError(error: Error): void {
-    this.update.mockRejectedValue(error);
-  }
-
-  // Delete
-  deleteSuccess(): void {
-    this.delete.mockResolvedValue(undefined);
-  }
 
   // Limpar métodos
   clearMocks(): void {
