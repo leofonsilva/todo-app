@@ -23,7 +23,7 @@ describe('TaskController - Create', () => {
     userRepositoryMock = testAppFactory.getUserRepository();
     
     jwtGeneratorHelper = new JwtGeneratorHelper();
-  }, 30000);
+  });
 
   beforeEach(() => {
     taskRepositoryMock.clearMocks();
