@@ -21,6 +21,7 @@ module.exports = {
     '!src/**/*.repository.(t|j)s',
     '!src/**/*.interface.(t|j)s',
     '!src/**/*.controller.(t|j)s',
+    '!src/**/*.response.dto.(t|j)s'
   ],
   coverageDirectory: './coverage',
 };
