@@ -7,6 +7,7 @@ export class TaskRepositoryMock implements ITaskRepository {
   public findByUserId = jest.fn();
   public update = jest.fn();
   public delete = jest.fn();
+  public count = jest.fn();
 
   // Limpar métodos
   clearMocks(): void {
@@ -16,5 +17,6 @@ export class TaskRepositoryMock implements ITaskRepository {
     this.findByUserId.mockClear();
     this.update.mockClear();
     this.delete.mockClear();
+    this.count.mockClear();
   }
 }
