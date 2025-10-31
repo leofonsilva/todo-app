@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Inject, Get, Put, Delete, Param, UseGuards, HttpCode } from '@nestjs/common';
+import { Controller, Post, Body, Inject, Get, Put, Delete, Param, UseGuards, HttpCode, Query } from '@nestjs/common';
 import { ICreateTaskUseCase } from 'src/task/application/usecases/create-task.usecase.interface';
 import { IDeleteTaskUseCase } from 'src/task/application/usecases/delete-task.usecase.interface';
 import { IGetAllTasksUseCase } from 'src/task/application/usecases/get-all-tasks.usecase.interface';
@@ -6,8 +6,10 @@ import { IGetTaskByIdUseCase } from 'src/task/application/usecases/get-task-by-i
 import { IUpdateTaskUseCase } from 'src/task/application/usecases/update-task.usecase.interface';
 import { CreateTaskDto } from 'src/task/application/dtos/create-task.dto';
 import { UpdateTaskDto } from 'src/task/application/dtos/update-task.dto';
+import { TaskFiltersDto } from '../application/dtos/task-filters.dto';
 import { Task } from 'src/task/domain/entities/task.entity';
 import { JwtAuthGuard } from 'src/shared/guards/jwt-auth.guard';
+import { GetAllTasksResponseDto } from '../application/dtos/get-all-tasks.response.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('tasks')
@@ -27,8 +29,8 @@ export class TaskController {
   }
 
   @Get()
-  async getAll(): Promise<Task[]> {
-    return await this.getAllTasksUseCase.execute();
+  async getAll(@Query() filters: TaskFiltersDto): Promise<GetAllTasksResponseDto> {
+    return await this.getAllTasksUseCase.execute(filters);
   }
 
   @Get(':id')

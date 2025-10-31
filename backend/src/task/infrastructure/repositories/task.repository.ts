@@ -7,7 +7,7 @@ import { ITaskRepository } from 'src/task/domain/repositories/task.repository.in
 @Injectable()
 export class TaskRepository implements ITaskRepository {
   constructor(
-    @InjectModel('Task') private readonly model: Model<any>,
+    @InjectModel('Task') private readonly model: Model<any>
   ) { }
 
   async create(task: Task): Promise<Task> {
@@ -16,20 +16,32 @@ export class TaskRepository implements ITaskRepository {
     return task;
   }
 
-  findAll(userId: string): Promise<Task[]> {
-    return this.model.find({ userId }).exec();
+  async findAll(userId: string, query: any = {}, options: any = {}): Promise<Task[]> {
+    const baseQuery = { userId, ...query };
+    
+    return await this.model
+      .find(baseQuery)
+      .sort(options.sort || { createdAt: -1 })
+      .skip(options.skip || 0)
+      .limit(options.limit || 10)
+      .exec();
+  }  
+
+  async findById(id: string, userId: string): Promise<Task | null> {
+    return await this.model.findOne({ _id: id, userId }).exec();
   }
 
-  findById(id: string, userId: string): Promise<Task | null> {
-    return this.model.findOne({ _id: id, userId }).exec();
-  }
-
-  update(id: string, task: Partial<Task>, userId: string): Promise<Task | null> {
-    return this.model.findOneAndUpdate({ _id: id, userId }, task, { new: true }).exec();
+  async update(id: string, task: Partial<Task>, userId: string): Promise<Task | null> {
+    return await this.model.findOneAndUpdate({ _id: id, userId }, task, { new: true }).exec();
   }
 
   async delete(id: string, userId: string): Promise<boolean> {
     const response = await this.model.deleteOne({ _id: id, userId }).exec();
     return response.deletedCount > 0;
+  }
+
+  async count(userId: string, query: any = {}): Promise<number> {
+    const baseQuery = { userId, ...query };
+    return await this.model.countDocuments(baseQuery).exec();
   }
 }
