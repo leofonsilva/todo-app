@@ -1,4 +1,4 @@
-import { GetUserByEmailResponseDto } from '../dtos/get-user-by-email.reponse.dto';
+import { GetUserByEmailResponseDto } from '../dtos/get-user-by-email.response.dto';
 
 export const IGetUserByEmailUseCase = Symbol('IGetUserByEmailUseCase');
 

@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { IGetUserByEmailUseCase } from './get-user-by-email.usecase.interface';
 import { IUserRepository } from 'src/user/domain/repositories/user.repository.interface';
-import { GetUserByEmailResponseDto } from '../dtos/get-user-by-email.reponse.dto';
+import { GetUserByEmailResponseDto } from '../dtos/get-user-by-email.response.dto';
 import { CurrentUserService } from 'src/shared/services/current-user.service';
 
 @Injectable()

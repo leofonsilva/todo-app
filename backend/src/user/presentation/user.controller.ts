@@ -3,7 +3,7 @@ import { RegisterUserDto } from 'src/user/application/dtos/register-user.dto';
 import { IRegisterUserUseCase } from 'src/user/application/usecases/register-user.usecase.interface';
 import { IGetUserByEmailUseCase } from 'src/user/application/usecases/get-user-by-email.usecase.interface';
 import { JwtAuthGuard } from 'src/shared/guards/jwt-auth.guard';
-import { GetUserByEmailResponseDto } from '../application/dtos/get-user-by-email.reponse.dto';
+import { GetUserByEmailResponseDto } from '../application/dtos/get-user-by-email.response.dto';
 
 @Controller('users')
 export class UserController {
