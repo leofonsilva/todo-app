@@ -16,9 +16,12 @@ export class TaskEntityBuilder {
     return new Task(id, user.id, title, description, status, createdAt, updatedAt);
   }
 
-  static buildCollection(user: User, count: number = 2): Task[] {
-    return Array.from({ length: count }, (_, index) => 
-      this.build(user, { id: `task-${index + 1}` })
+  static buildCollection(user: User, count: number = 2, overrides?: Partial<Task>): Task[] {
+    return Array.from({ length: count }, (_, index) =>
+      this.build(user, {
+        id: `task-${index + 1}`,
+        ...overrides
+      })
     );
   }
 }

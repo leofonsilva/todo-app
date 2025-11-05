@@ -1,5 +1,5 @@
 import { IsOptional, IsIn, IsString, IsInt, Min, IsBoolean } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Type } from 'class-transformer'; // Importante usar quando é query nos tipos que são diferentes de string
 
 export class TaskFiltersDto {
   @IsOptional()
