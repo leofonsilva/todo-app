@@ -55,6 +55,34 @@ describe('CreateTaskUseCase', () => {
         })
       );
     });
+
+    it('should create task successfully without description', async () => {
+      const request = CreateTaskDtoBuilder.build({ description: undefined });
+      const { user } = UserEntityBuilder.build();
+      const taskEntity = TaskEntityBuilder.build(user, {
+        title: request.title,
+        description: ''
+      });
+
+      currentUserService.setUser({
+        userId: user.id,
+        email: user.email
+      });
+
+      taskRepositoryMock.create.mockResolvedValue(taskEntity);
+
+      const result = await sut.execute(request);
+
+      expect(result).toEqual(taskEntity);
+      expect(taskRepositoryMock.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          userId: user.id,
+          title: request.title,
+          description: '',
+          status: 'pending',
+        })
+      );
+    });
   });
 
   describe('Error cases', () => {
