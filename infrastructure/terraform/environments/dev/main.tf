@@ -84,23 +84,23 @@ module "documentdb" {
   tags = var.common_tags
 }
 
-# TODO: Necessário verificar daqui para baixo
 module "db_secret" {
   source = "../../modules/secrets"
-  name   = "${local.name}-db-credentials"
+  name   = "${local.name}-db-credentials" # Nome do segredo
 
   secret_data = {
-    connection_string = module.documentdb.connection_string
-    username          = module.documentdb.cluster_username
-    password          = module.documentdb.cluster_password
-    endpoint          = module.documentdb.cluster_endpoint
-    database          = "tododb"
+    connection_string = module.documentdb.connection_string # String de conexão MongoDB
+    username          = module.documentdb.cluster_username  # Usuário do banco
+    password          = module.documentdb.cluster_password  # Senha do banco
+    endpoint          = module.documentdb.cluster_endpoint  # Endpoint do cluster
+    database          = "tododb"                            # Nome do banco de dados
   }
 
   tags       = var.common_tags
-  depends_on = [module.documentdb]
+  depends_on = [module.documentdb] # Aguarda DocumentDB estar pronto
 }
 
+# TODO: Necessário verificar daqui para baixo
 module "ecr" {
   source           = "../../modules/ecr"
   repository_names = ["lfs-todo-backend", "lfs-todo-frontend"]

@@ -20,6 +20,13 @@ Infraestrutura completa para aplicação Todo em ambiente de desenvolvimento oti
 - **1 IAM Role**: lfs-todo-dev-eks-admin-role - Permissões para administrar o cluster Kubernetes
 - **1 IAM Policy**: lfs-todo-dev-assume-eks-admin - Permite assumir a role de admin do EKS
 
+### Módulo Security Groups
+- **1 Security Group**: lfs-todo-dev-eks-sg - Firewall para o cluster EKS
+- **Regras**:
+  - **Porta 443**: Acesso HTTPS à API Kubernetes (0.0.0.0/0)
+  - **Portas 0-0**: Comunicação interna VPC (10.0.0.0/16) - Todos protocolos
+  - **Egress**: Todo tráfego de saída para internet (0.0.0.0/0)
+
 ### Módulo EKS Cluster
 - **1 EKS Cluster**: lfs-todo-dev-eks - Cluster Kubernetes gerenciado
 
@@ -31,6 +38,11 @@ Infraestrutura completa para aplicação Todo em ambiente de desenvolvimento oti
 - **1 Security Group**: lfs-todo-dev-docdb-sg - Acesso apenas da VPC
 - **1 Instância**: db.t4g.medium - Instância econômica ARM
 - **Backup**: 1 dia de retenção - Configuração econômica para dev
+
+### Módulo Secrets
+- **1 Secret**: lfs-todo-dev-db-credentials - Armazena credenciais do DocumentDB de forma segura
+- **Contém**: String de conexão, usuário, senha, endpoint e nome do banco
+- **Segurança**: Criptografia automática, acesso controlado por IAM
 
 ## Pré-requisitos
 - [Terraform](https://www.terraform.io/downloads.html) instalado
