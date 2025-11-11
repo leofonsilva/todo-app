@@ -25,7 +25,6 @@ output "secret_arn" {
   description = "Database secret ARN"
 }
 
-# TODO: Necessário verificar daqui para baixo
 output "ecr_repository_urls" {
   value       = module.ecr.repository_urls
   description = "ECR Repository URLs"

@@ -44,6 +44,11 @@ Infraestrutura completa para aplicação Todo em ambiente de desenvolvimento oti
 - **Contém**: String de conexão, usuário, senha, endpoint e nome do banco
 - **Segurança**: Criptografia automática, acesso controlado por IAM
 
+### Módulo ECR
+- **2 Repositórios ECR**: 
+  - lfs-todo-backend - Para imagens Docker da aplicação backend
+  - lfs-todo-frontend - Para imagens Docker da aplicação frontend
+
 ## Pré-requisitos
 - [Terraform](https://www.terraform.io/downloads.html) instalado
 - Credenciais AWS configuradas com permissões adequadas

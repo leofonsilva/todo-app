@@ -100,9 +100,8 @@ module "db_secret" {
   depends_on = [module.documentdb] # Aguarda DocumentDB estar pronto
 }
 
-# TODO: Necessário verificar daqui para baixo
 module "ecr" {
   source           = "../../modules/ecr"
-  repository_names = ["lfs-todo-backend", "lfs-todo-frontend"]
+  repository_names = ["lfs-todo-backend", "lfs-todo-frontend"] # Repositórios para as aplicações
   tags             = var.common_tags
 }
