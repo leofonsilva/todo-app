@@ -14,13 +14,13 @@ output "eks_cluster_endpoint" {
   sensitive   = true
 }
 
-# TODO: Necessário verificar daqui para baixo
 output "documentdb_endpoint" {
   value       = module.documentdb.cluster_endpoint
   description = "DocumentDB endpoint"
   sensitive   = true
 }
 
+# TODO: Necessário verificar daqui para baixo
 output "secret_arn" {
   value       = module.db_secret.secret_arn
   description = "Database secret ARN"

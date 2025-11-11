@@ -67,23 +67,24 @@ module "nodegroups" {
   depends_on = [module.eks]
 }
 
-# TODO: Necessário verificar daqui para baixo
 module "documentdb" {
   source     = "../../modules/documentdb"
   name       = local.name
-  vpc_id     = module.network.vpc_id
-  vpc_cidr   = module.network.vpc_cidr
-  subnet_ids = module.network.private_subnets
+  vpc_id     = module.network.vpc_id          # VPC onde o banco será criado
+  vpc_cidr   = module.network.vpc_cidr        # CIDR para regras de segurança
+  subnet_ids = module.network.private_subnets # Subnets privadas para o banco
 
-  instance_class        = "db.t4g.medium"
-  instance_count        = 1
-  backup_retention_days = 1
-  deletion_protection   = false
-  storage_encrypted     = true
+  master_username       = "mainuser"      # Main user
+  instance_class        = "db.t4g.medium" # Instância econômica ARM
+  instance_count        = 1               # Apenas 1 instância para dev
+  backup_retention_days = 1               # 1 dia de backup (econômico)
+  deletion_protection   = false           # Permite deletar facilmente em dev
+  storage_encrypted     = true            # Criptografia de dados ativada
 
   tags = var.common_tags
 }
 
+# TODO: Necessário verificar daqui para baixo
 module "db_secret" {
   source = "../../modules/secrets"
   name   = "${local.name}-db-credentials"

@@ -26,6 +26,12 @@ Infraestrutura completa para aplicação Todo em ambiente de desenvolvimento oti
 ### Módulo NodeGroups
 - **1 Node Group**: default - Grupo de nodes EKS com instâncias t3.small
 
+### Módulo DocumentDB
+- **1 Cluster DocumentDB**: lfs-todo-dev - Banco de dados MongoDB compatível
+- **1 Security Group**: lfs-todo-dev-docdb-sg - Acesso apenas da VPC
+- **1 Instância**: db.t4g.medium - Instância econômica ARM
+- **Backup**: 1 dia de retenção - Configuração econômica para dev
+
 ## Pré-requisitos
 - [Terraform](https://www.terraform.io/downloads.html) instalado
 - Credenciais AWS configuradas com permissões adequadas

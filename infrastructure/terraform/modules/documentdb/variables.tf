@@ -1,62 +1,61 @@
 variable "name" {
+  description = "Nome base para os recursos do DocumentDB"
   type        = string
-  description = "Base name for DocumentDB resources"
 }
 
 variable "vpc_id" {
+  description = "ID da VPC onde o DocumentDB será criado"
   type        = string
-  description = "VPC ID where database will be deployed"
 }
 
 variable "vpc_cidr" {
+  description = "CIDR da VPC para regras de security group"
   type        = string
-  description = "CIDR block of the VPC for security group rules"
 }
 
 variable "subnet_ids" {
+  description = "Lista de IDs das subnets para o DocumentDB"
   type        = list(string)
-  description = "List of private subnet IDs for database"
 }
 
 variable "master_username" {
+  description = "Nome de usuário master para o DocumentDB"
   type        = string
-  default     = "admin"
-  description = "Master username for database"
-  sensitive   = true
+  default     = "mainuser"
 }
 
 variable "instance_class" {
+  description = "Classe da instância do DocumentDB"
   type        = string
-  default     = "db.t3.medium"
-  description = "DB instance class (db.t3.medium, db.r5.large, etc.)"
+  default     = "db.t4g.medium"
 }
 
 variable "instance_count" {
+  description = "Número de instâncias no cluster DocumentDB"
   type        = number
   default     = 1
-  description = "Number of DB instances (1 for dev, 2+ for prod)"
 }
 
 variable "backup_retention_days" {
+  description = "Número de dias para retenção de backups"
   type        = number
-  default     = 3
-  description = "Backup retention period in days (3 for dev, 7+ for prod)"
+  default     = 1
 }
 
 variable "deletion_protection" {
+  description = "Habilita proteção contra deleção do cluster"
   type        = bool
   default     = false
-  description = "Enable deletion protection (false for dev, true for prod)"
 }
 
 variable "storage_encrypted" {
+  description = "Habilita criptografia do armazenamento"
   type        = bool
   default     = true
-  description = "Enable storage encryption (true for all environments)"
 }
 
 variable "tags" {
+  description = "Tags para aplicar aos recursos"
   type        = map(string)
   default     = {}
-  description = "Tags to apply to resources"
 }
