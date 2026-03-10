@@ -2,7 +2,7 @@
 SETLOCAL
 
 REM User settings
-SET USER_NAME=Leonardo Fonseca Silva
+SET USER_NAME=Leonardo Fonseca
 SET USER_EMAIL=leonardofonsecasilva@hotmail.com
 
 REM Local Git configuration
