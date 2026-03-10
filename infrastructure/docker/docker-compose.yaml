@@ -1,55 +1,42 @@
 # Subir ambiente em desenvolvimento
-# Run: docker-compose up --build -d
+# Run: docker-compose up -d
 # Stop: docker-compose down
+# View logs: docker-compose logs -f
+# Access Mongo Express: http://localhost:8081
 
 services:
-  todo-mongodb:
-    image: mongo:6
-    container_name: todo-mongodb
+  todo-mongo-db:
+    image: mongo:7
+    container_name: todo-mongo
     restart: unless-stopped
-    ports:
-      - '27017:27017'
-    volumes:
-      - D:/Development/Docker/todo-app/volumes/mongodb/data:/data/db
-    networks:
-      - todo-network
-  
-  todo-backend:
-    build:
-      context: ../../backend
-      dockerfile: Dockerfile
-    container_name: todo-backend
-    ports:
-      - '3001:3001'
-    depends_on:
-      - todo-mongodb
-    volumes:
-      - ../../backend:/app
-      - /app/node_modules
     environment:
-      - MONGO_URI=mongodb://todo-mongodb:27017/todo
-      - JWT_SECRET=superSecretKey123
-      - JWT_EXPIRES_IN=3600s
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+    ports:
+      - "${MONGO_PORT}:27017"
+    volumes:
+      - ${MONGO_VOLUME_PATH}:/data/db
     networks:
       - todo-network
 
-  todo-frontend:
-    build:
-      context: ../../frontend
-      dockerfile: Dockerfile
-    container_name: todo-frontend
+  todo-mongo-express:
+    image: mongo-express:latest
+    container_name: todo-mongo-express
+    restart: unless-stopped
     ports:
-      - '3000:3000'
-    depends_on:
-      - todo-backend
-    volumes:
-      - ../../frontend:/app
-      - /app/node_modules
+      - "${ME_PORT}:8081"
     environment:
-      - NEXT_PUBLIC_API_URL=http://todo-backend:3001
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_ROOT_USER}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_ROOT_PASSWORD}
+      ME_CONFIG_MONGODB_URL: mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/
+      ME_CONFIG_BASICAUTH: false
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: true
+    depends_on:
+      - todo-mongo-db
     networks:
       - todo-network
-  
+
 networks:
   todo-network:
     name: todo-network
