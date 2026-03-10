@@ -1,11 +1,11 @@
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { Task } from 'src/task/domain/entities/task.entity';
 import { User } from 'src/user/domain/entities/user.entity';
 
 export class TaskEntityBuilder {
   static build(user: User, overrides?: Partial<Task>): Task {
     const {
-      id = faker.datatype.uuid(),
+      id = faker.string.uuid(),
       title = faker.lorem.words(3),
       description = faker.lorem.sentence(),
       status = 'pending' as const,

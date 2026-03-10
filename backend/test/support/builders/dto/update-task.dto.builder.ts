@@ -1,4 +1,4 @@
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { UpdateTaskDto } from 'src/task/application/dtos/update-task.dto';
 
 export class UpdateTaskDtoBuilder {
