@@ -1,7 +1,7 @@
 'use client';
 
-import LoginForm from '../components/Auth/LoginForm';
-import RegisterForm from '../components/Auth/RegisterForm';
+import LoginForm from '../components/auth/LoginForm';
+import RegisterForm from '../components/auth/RegisterForm';
 import { useState } from 'react';
 
 export default function Home() {

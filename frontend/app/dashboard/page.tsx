@@ -1,9 +1,9 @@
 'use client';
 
-import TaskForm from '../../components/Tasks/TaskForm';
-import TaskList from '../../components/Tasks/TaskList';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import Header from '@/components/layout/Header';
+import TaskContainer from '@/components/tasks/TaskContainer';
 
 export default function Dashboard() {
   const router = useRouter();
@@ -22,27 +22,10 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900">Todo App</h1>
-          <button
-            onClick={handleLogout}
-            className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
-          >
-            Logout
-          </button>
-        </div>
-      </header>
-
+      <Header onLogout={handleLogout} />
+      
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-1">
-            <TaskForm />
-          </div>
-          <div className="lg:col-span-2">
-            <TaskList />
-          </div>
-        </div>
+        <TaskContainer />
       </main>
     </div>
   );

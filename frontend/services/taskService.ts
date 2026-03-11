@@ -1,8 +1,8 @@
 import { api } from './api';
-import { CreateTaskRequest, Task, UpdateTaskRequest } from '@/types/task';
+import { CreateTaskRequest, GetAllTasksResponse, Task, TaskFiltersRequest, UpdateTaskRequest } from '@/types/task';
 
-export const getTasks = async (): Promise<Task[]> => {
-  const response = await api.get<Task[]>('/tasks');
+export const getTasks = async (filters: TaskFiltersRequest): Promise<GetAllTasksResponse> => {
+  const response = await api.get<GetAllTasksResponse>('/tasks', { params: filters });
   return response.data;
 };
 
