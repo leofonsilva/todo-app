@@ -1,5 +1,6 @@
-import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus, Logger, } from '@nestjs/common';
+import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus, Logger, ExecutionContext, } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { Reflector } from '@nestjs/core';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -9,6 +10,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
+
+    const isHealthCheck = request.url.includes('/health');
 
     const status =
       exception instanceof HttpException
@@ -20,8 +23,20 @@ export class AllExceptionsFilter implements ExceptionFilter {
         ? this.extractMessage(exception.getResponse())
         : (exception as any)?.message || 'Internal server error';
 
+    if (isHealthCheck) {
+      this.logger.log(`Health check error: ${request.url} - ${status}`);
+
+      const errorResponse = exception instanceof HttpException
+        ? exception.getResponse()
+        : { message: 'Internal server error' };
+
+      return response.status(status).json(errorResponse);
+    }
+
     const stack =
-      exception instanceof Error ? exception.stack : undefined;
+      exception instanceof Error
+        ? exception.stack
+        : undefined;
 
     this.logger.error({
       path: request.url,

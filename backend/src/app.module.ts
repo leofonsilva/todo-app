@@ -6,6 +6,7 @@ import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './auth/auth.module';
 import { TaskModule } from './task/task.module';
 import { UserModule } from './user/user.module';
+import { HealthModule } from './health/health.module';
 import { APP_FILTER, APP_PIPE } from '@nestjs/core';
 import { AllExceptionsFilter } from './shared/filters/http-exception.filter';
 
@@ -28,6 +29,7 @@ import { AllExceptionsFilter } from './shared/filters/http-exception.filter';
     TaskModule,
     UserModule,
     AuthModule,
+    HealthModule
   ],
   providers: [
     {
