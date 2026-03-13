@@ -1,0 +1,30 @@
+import { Injectable, Inject } from '@nestjs/common';
+import { ICreateTaskUseCase } from './create-task.usecase.interface';
+import { ITaskRepository } from 'src/modules/task/domain/repositories/task.repository.interface';
+import { Task } from 'src/modules/task/domain/entities/task.entity';
+import { CreateTaskDto } from 'src/modules/task/application/dtos/create-task.dto';
+import { CurrentUserService } from 'src/shared/services/current-user.service';
+
+@Injectable()
+export class CreateTaskUseCase implements ICreateTaskUseCase {
+  constructor(
+    @Inject(ITaskRepository) private readonly taskRepository: ITaskRepository,
+    private readonly currentUserService: CurrentUserService
+  ) { }
+
+  async execute(request: CreateTaskDto): Promise<Task> {
+    const userId = this.currentUserService.getUserId();
+    
+    const task = new Task(
+      '',
+      userId,
+      request.title,
+      request.description || '',
+      'pending',
+      new Date(),
+      new Date()
+    );
+
+    return await this.taskRepository.create(task);
+  }
+}

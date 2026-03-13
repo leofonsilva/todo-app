@@ -1,4 +1,4 @@
-import { ITaskRepository } from 'src/task/domain/repositories/task.repository.interface';
+import { ITaskRepository } from 'src/modules/task/domain/repositories/task.repository.interface';
 
 export class TaskRepositoryMock implements ITaskRepository {
   public create = jest.fn();

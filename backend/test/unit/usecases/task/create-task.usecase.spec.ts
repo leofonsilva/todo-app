@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
-import { CreateTaskUseCase } from 'src/task/application/usecases/create-task.usecase';
-import { ITaskRepository } from 'src/task/domain/repositories/task.repository.interface';
+import { CreateTaskUseCase } from 'src/modules/task/application/usecases/create-task.usecase';
+import { ITaskRepository } from 'src/modules/task/domain/repositories/task.repository.interface';
 import { CurrentUserService } from 'src/shared/services/current-user.service';
 import { UserEntityBuilder } from 'test/support/builders/entities/user.entity.builder';
 import { TaskEntityBuilder } from 'test/support/builders/entities/task.entity.builder';

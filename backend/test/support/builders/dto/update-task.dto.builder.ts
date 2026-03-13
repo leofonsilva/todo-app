@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { UpdateTaskDto } from 'src/task/application/dtos/update-task.dto';
+import { UpdateTaskDto } from 'src/modules/task/application/dtos/update-task.dto';
 
 export class UpdateTaskDtoBuilder {
   static build(overrides?: Partial<UpdateTaskDto>): UpdateTaskDto {

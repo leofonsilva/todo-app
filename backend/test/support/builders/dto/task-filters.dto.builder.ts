@@ -1,4 +1,4 @@
-import { TaskFiltersDto } from 'src/task/application/dtos/task-filters.dto';
+import { TaskFiltersDto } from 'src/modules/task/application/dtos/task-filters.dto';
 
 export class TaskFiltersDtoBuilder {
   static build(overrides?: Partial<TaskFiltersDto>): TaskFiltersDto {

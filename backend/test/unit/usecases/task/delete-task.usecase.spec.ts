@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
-import { DeleteTaskUseCase } from 'src/task/application/usecases/delete-task.usecase';
-import { ITaskRepository } from 'src/task/domain/repositories/task.repository.interface';
+import { DeleteTaskUseCase } from 'src/modules/task/application/usecases/delete-task.usecase';
+import { ITaskRepository } from 'src/modules/task/domain/repositories/task.repository.interface';
 import { CurrentUserService } from 'src/shared/services/current-user.service';
 import { UserEntityBuilder } from 'test/support/builders/entities/user.entity.builder';
 import { TaskRepositoryMock } from 'test/support/mocks/repositories/task-repository.mock';

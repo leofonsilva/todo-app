@@ -3,10 +3,10 @@ import { INestApplication, Logger } from '@nestjs/common';
 import { AppModule } from 'src/app.module';
 import { getConnectionToken } from '@nestjs/mongoose';
 
-import { IUserRepository } from 'src/user/domain/repositories/user.repository.interface';
-import { UserRepository } from 'src/user/infrastructure/repositories/user.repository';
-import { TaskRepository } from 'src/task/infrastructure/repositories/task.repository';
-import { ITaskRepository } from 'src/task/domain/repositories/task.repository.interface';
+import { IUserRepository } from 'src/modules/user/domain/repositories/user.repository.interface';
+import { UserRepository } from 'src/modules/user/infrastructure/repositories/user.repository';
+import { TaskRepository } from 'src/modules/task/infrastructure/repositories/task.repository';
+import { ITaskRepository } from 'src/modules/task/domain/repositories/task.repository.interface';
 
 import { TaskRepositoryMock } from 'test/support/mocks/repositories/task-repository.mock';
 import { UserRepositoryMock } from 'test/support/mocks/repositories/user-repository.mock';

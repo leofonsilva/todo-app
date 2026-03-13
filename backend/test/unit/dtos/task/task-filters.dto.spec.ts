@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { validate } from 'class-validator';
 import { plainToClass } from 'class-transformer';
-import { TaskFiltersDto } from 'src/task/application/dtos/task-filters.dto';
+import { TaskFiltersDto } from 'src/modules/task/application/dtos/task-filters.dto';
 import { TaskFiltersDtoBuilder } from 'test/support/builders/dto/task-filters.dto.builder';
 
 describe('TaskFiltersDto', () => {

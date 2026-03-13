@@ -1,5 +1,5 @@
 import { validate } from 'class-validator';
-import { UpdateTaskDto } from 'src/task/application/dtos/update-task.dto';
+import { UpdateTaskDto } from 'src/modules/task/application/dtos/update-task.dto';
 import { UpdateTaskDtoBuilder } from 'test/support/builders/dto/update-task.dto.builder';
 
 describe('UpdateTaskDto', () => {

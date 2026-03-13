@@ -1,14 +1,16 @@
 import { Module, ValidationPipe } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
+import { APP_FILTER, APP_PIPE } from '@nestjs/core';
+
+import { HealthModule } from './infrastructure/health/health.module';
 
 import { SharedModule } from './shared/shared.module';
-import { AuthModule } from './auth/auth.module';
-import { TaskModule } from './task/task.module';
-import { UserModule } from './user/user.module';
-import { HealthModule } from './health/health.module';
-import { APP_FILTER, APP_PIPE } from '@nestjs/core';
 import { AllExceptionsFilter } from './shared/filters/http-exception.filter';
+
+import { AuthModule } from './modules/auth/auth.module';
+import { TaskModule } from './modules/task/task.module';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
@@ -25,11 +27,13 @@ import { AllExceptionsFilter } from './shared/filters/http-exception.filter';
       inject: [ConfigService]
     }),
 
+    HealthModule,
+
     SharedModule,
+
     TaskModule,
     UserModule,
-    AuthModule,
-    HealthModule
+    AuthModule
   ],
   providers: [
     {

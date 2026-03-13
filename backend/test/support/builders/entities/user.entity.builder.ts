@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { User } from 'src/user/domain/entities/user.entity';
+import { User } from 'src/modules/user/domain/entities/user.entity';
 
 export class UserEntityBuilder {
   static build(overrides?: Partial<User>): { user: User; password: string } {

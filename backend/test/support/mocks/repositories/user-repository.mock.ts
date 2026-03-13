@@ -1,4 +1,4 @@
-import { IUserRepository } from 'src/user/domain/repositories/user.repository.interface';
+import { IUserRepository } from 'src/modules/user/domain/repositories/user.repository.interface';
 
 export class UserRepositoryMock implements IUserRepository {
   public create = jest.fn();

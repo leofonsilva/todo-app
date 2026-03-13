@@ -1,5 +1,5 @@
 import { validate } from 'class-validator';
-import { CreateTaskDto } from 'src/task/application/dtos/create-task.dto';
+import { CreateTaskDto } from 'src/modules/task/application/dtos/create-task.dto';
 import { CreateTaskDtoBuilder } from 'test/support/builders/dto/create-task.dto.builder';
 
 describe('CreateTaskDto', () => {

@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
-import { Task } from 'src/task/domain/entities/task.entity';
-import { User } from 'src/user/domain/entities/user.entity';
+import { Task } from 'src/modules/task/domain/entities/task.entity';
+import { User } from 'src/modules/user/domain/entities/user.entity';
 
 export class TaskEntityBuilder {
   static build(user: User, overrides?: Partial<Task>): Task {
